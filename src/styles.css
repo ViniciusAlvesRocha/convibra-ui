@@ -1,0 +1,195 @@
+/* You can add global styles to this file, and also import other style files */
+.error{
+    color: #ee2558;
+    font-size: 12px;
+}
+
+.tagify{
+    overflow: auto;
+    height: 100px !important;
+}
+
+.red-text {
+    color: #ee2558;
+}
+
+.green-text {
+    color: #04BE5B;
+}
+
+.badge{
+    padding: 10px !important;
+    font-size: 11px !important;
+    width: 100%;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+h1 {font-size:24px !important;}
+h2 {font-size:22px !important;}
+h3 {font-size:20px !important;}
+h4 {font-size:18px !important;}
+h5 {font-size:16px !important;}
+h6 {font-size:14px !important;}
+/* Common CSS Start */
+.block-header .row .col-sm-12 {display:flex; align-items:center; justify-content:space-between; width:100%; min-width:100%;}
+.block-header .row .col-sm-12 ul li a i {font-size:17px; vertical-align:revert;}
+.top-breadcrumb {display:flex; align-items:center; justify-content:space-between;}
+.top-breadcrumb ul li a i {font-size:17px; vertical-align:revert;}
+.red-text {cursor:pointer; margin-right: 5px;}
+.pagination_div {overflow:hidden; display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.pagination_div ul {margin-bottom:0px;}
+.checkbox label::before, .checkbox label::after {width:20px !important; height:20px !important;}
+.checkbox label, .radio label {line-height:21px !important;}
+.btn {margin:0px 1px!important;}
+.block-header {margin-bottom:0px !important;}
+qrcode img {width:100%;}
+.actiontd span {color:#0c7ce6; cursor:pointer;}
+.actiontd span a {margin-right:5px;}
+
+.mat-horizontal-stepper-header-container {overflow-x:scroll !important;}
+.mat-step-header {overflow: initial !important;}
+.mat-step-label {overflow: initial !important; text-overflow: initial !important;}
+.card {border:0 !important; background:transparen !important;}
+/* Common CSS End */
+
+/* Sidebar CSS Start */
+header {padding:10px 0px;}
+.sidebar_search {display:flex; align-items:center;}
+.sidebar_search .right .btn {margin:0px 0px 0px 10px;}
+.user-info a {padding: 15px 10px; position: relative;}
+.user-info .image img {border-radius: 8px; width: 50px; vertical-align: bottom !important; border: 3px solid #fff;}
+.header_btn {display:flex; align-items:center; justify-content:flex-end;}
+#logout {position:inherit !important; display:inline-block; top: 60px; height: 2.375rem !important; min-width: 2.375rem !important; width: 2.375rem !important; line-height: 2.375rem !important; border-radius: .2875rem !important;}
+#logout:hover, #logout:focus {background: #0c7ce6 !important;}
+.theme-blush .sidebar .menu .list a:hover {color:#0c7ce6 !important;}
+.theme-blush .sidebar .menu .list li.active > :first-child i, .theme-blush .sidebar .menu .list li.active > :first-child span {color:#0c7ce6 !important;}
+.mobile_menu {display:none;}
+/* Sidebar CSS End */
+
+/* Account Admin Panel CSS Start */
+.account-admin-addmore-dflex {display:flex; align-items:center;}
+.account-admin-addmore-dflex .btn {margin-left:10px !important;}
+/* Account Admin Panel CSS End */
+
+/* Issuer Panel CSS Start */
+.selected-item {margin-bottom:10px !important;}
+/* Issuer Panel CSS End */
+
+/* Subadmin Panel CSS Start */
+.certificate_list_filter {display: flex; align-items: center; margin-bottom: 20px;}
+.certificate_list_filter .left {display:flex; width:78%;}
+.certificate_list_filter .left .btn-group {margin-right:10px;}
+.certificate_info_right_btn_div {display:flex; align-items:center; justify-content:space-between;}
+.certificate_list_filter .right {display:flex;}
+/* Subadmin Panel CSS End */
+
+/* Camera CSS Start */
+.camera-box {float:none; margin:0 auto; height:350px; overflow:hidden; border:10px solid #eee; padding:0px !important;}
+.camera-box .scanner-shell, zxing-scanner {height:100%;}
+.camera-box video {height:100% !important;}
+.cameroffmsg {height: 100%; display: inline-grid; align-content: center;}
+.camera-box h2 {font-size:20px; margin-bottom:5px;}
+/* Camera CSS End */
+
+/* Update Template Page CSS Start */
+.update-template .box {margin-bottom:30px;}
+.update-template .box .innerbox {background-color:#f6f6f6; padding:15px; text-align:center;}
+.update-template .box .innerbox label {font-weight:600;}
+.update-template .box .innerbox p {margin-bottom:0px;}
+/* Update Template Page CSS End */
+
+/* Certificate Detail Page CSS Start */
+.vertical-tab-row .mat-tab-group {flex-direction:row !important; width:100%;}
+.vertical-tab-row .mat-tab-body-wrapper {width:100%;}
+.vertical-tab-row .mat-tab-labels {flex-direction:column;}
+.vertical-tab-row .mat-tab-label {text-align:left; justify-content:left; border-bottom:1px solid #ccc; text-transform:capitalize; white-space: normal !important; height:60px;}
+.vertical-tab-row .mat-tab-label:last-child {border-bottom:none;}
+.mat-tab-label-active {border-left:2px solid #0c7ce6; background-color:#0c7ce6; color:#fff;}
+.vertical-tab-row .mat-tab-header {background-color:#fff; margin-right:15px; width:22%;}
+.vertical-tab-row .mat-tab-header, .vertical-tab-row .mat-tab-nav-bar {border:none;}
+.vertical-tab-row .mat-ink-bar {background:none !important;}
+.vertical-tab-row .card .header {padding: 0px 0 15px 0;}
+.vertical-tab-row .card .header h2 {font-size:20px; color:#333;}
+.vertical-tab-row .mat-tab-header-pagination-controls-enabled .mat-tab-header-pagination {display:none;}
+.vertical-tab-row .mat-tab-label .mat-tab-label-content {flex-wrap: wrap!important; white-space: normal !important;}
+.vertical-tab-row .mat-tab-label .mat-tab-label-content span {display: flex!important; flex: 1 0 100%!important;justify-content: center!important;}
+.qrcodecenter {float:none; margin:0 auto;}
+.vertical-tab-row iframe {height:100vh;}
+.loading_div {display:flex; justify-content:center; align-items:center; height:100vh;}
+/* Certificate Detail Page CSS End */
+
+/* Block Explorer Page CSS Start */
+.block_explorer .count_box .inner_count_box {background:#f6f6f6; padding:30px; text-align:center; height:100%; display:flex; justify-content:center;}
+.block_explorer .count_box .inner_count_box h2 {margin-bottom:0px;}
+.search_input_with_search_btn .btn {height:100%; border-top-left-radius: 0px; border-bottom-left-radius: 0px;}
+.recent_page_drop_fourbtns {display:flex; align-items:center; justify-content:space-between;}
+.block_explorer .dropdown-toggle {padding:8px 18px !important; line-height:20px !important;}
+.text-truncate {overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.hash-tag {max-width: 132px; display: inline-block; vertical-align: bottom;}
+/* Block Explorer Page CSS End */
+
+/* Block Summary Page CSS Start */
+.block_summary_page .transaction_accordian h5 {font-weight:600;}
+.block_summary_page .transaction_accordian .panel-title {background-color:#f6f6f6; font-size:14px !important;}
+.table-striped tbody tr:nth-of-type(2n+1) {background:none !important;}
+.table-hover tbody tr:hover {background-color: rgba(231,234,243,.4) !important;}
+.table td, .table th {vertical-align:middle !important;}
+.table th {background-color:#f8fafd; border-color: #e7eaf3;}
+.panel-title a:after {
+    font-family:Fontawesome;
+    content:'\f078';
+    float:right;
+    font-size:10px;
+    font-weight:300;
+}
+/* Block Summary Page CSS End */
+
+/* Instance Setting Page CSS Start */
+.mat-horizontal-stepper-header.active{background-color:#2184be !important;}
+/* Instance Setting Page CSS End */
+
+/* Sidebar CSS Start */
+.sidemenu {width:250px; height:100vh; position:fixed; transition: all 0.5s; font-family: "Comfortaa", sans-serif; top:0; left:0; padding:15px 10px;}
+.navbar-brand {margin:0px; padding:0px;}
+.user_profile {display:flex; align-items:center; margin-top:10px; border-bottom: 1px solid #eee; padding-bottom:15px; margin-bottom:15px;}
+.user_profile a {margin:0px 10px 0px 0px; padding:0px;}
+.user_profile a img {border-radius: 8px; width: 50px; border: 3px solid #fff; box-shadow: 0px 5px 5px 0px rgba(41, 42, 51, 0.2);}
+.user_profile .detail h4 {margin:0px;}
+.menus {position: relative; z-index:111; margin:20px 0px 30px 0px; height:100%; overflow-y:scroll; scrollbar-width: none; -ms-overflow-style: none; /* IE 10+ */ ::-webkit-scrollbar { 
+    display: none; /* Chrome Safari */}
+}
+.menus ul {height:100vh; margin: 0px 0px 100px 0px;}
+.menus ul li {padding: 15px 10px;}
+.menus ul li a {color:#222;}
+.menus ul li a:hover, .menus ul li a:focus {color: #0c7ce6;}
+.menus ul li a.active {color: #0c7ce6; font-weight:700;}
+.menus ul li a i {transition: all 0.5s;}
+.menus ul li a:hover i {transform: rotate(-20deg);}
+.menus ul li a span {margin-left:12px;}
+/* Sidebar CSS End */
+
+@media (max-width: 1169px) {
+    /* Sidebar Menu CSS Start */
+    .mobile_menu {display:block !important; position:inherit !important;}
+    .sidebar {left: -250px !important;}
+    .sidebar.open {left:0 !important;}
+    .ls-toggle-menu .sidebar {width:250px !important;}
+    .ls-toggle-menu .sidebar .menu .list {margin:0px 10px !important;}
+    .ls-toggle-menu .sidebar .menu .list a span {display:inline-block !important;}
+    .ls-toggle-menu .sidebar .menu .list a {text-align:left !important;}
+    .ls-toggle-menu .navbar-brand a, .ls-toggle-menu .sidebar .user-info .detail {display:block !important;}
+    /* Sidebar Menu CSS End */
+    section.content {margin:0px 15px !important;}
+}
+@media (max-width: 767px) {
+    .ls-closed section.content {height:auto !important;}
+}
+
+@media (max-width: 640px) {
+    .block-header .row .col-sm-12 {display:block;}
+}
+
+.public-full-content{
+    margin:20px !important;
+    overflow: hidden !important;
+}

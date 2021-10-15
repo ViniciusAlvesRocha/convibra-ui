@@ -1,0 +1,703 @@
+<style>
+	/* div.mb-3 > div.input-group > div >button>span.bs-caret:after */
+</style>
+<section class="content">
+	<div class="body_scroll">
+		<div class="block-header">
+			<div class="row">
+				<div class="col-sm-12 top-breadcrumb">
+					<h2>Instance Settings</h2>
+					<ul class="breadcrumb">
+						
+						<li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+						<li class="breadcrumb-item active">Instance Settings</li>
+					</ul>
+					<!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+              class="zmdi zmdi-sort-amount-desc"></i></button> -->
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="">
+				<div class="card">
+					<div class="body">
+						<mat-horizontal-stepper>
+							<!-- General Info TAB Start -->
+							<mat-step>
+								<ng-template matStepLabel>General</ng-template>
+								<h3>General Information &nbsp;
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.generalInfo"
+											(click)="enableEditMode('generalInfo')"> 
+										Edit
+									</button>
+								</h3>
+
+								<form [formGroup]="generalInfoForm" (submit)="updateGeneralInfo()">
+									<div class="row" [ngClass]="{'readonly-section':!isEditable.generalInfo}">
+									  <div class="mb-3 col-sm-6">
+										<label>Logo</label>
+										<div class="input-group">
+										  <input type="file" class="form-control" #logo placeholder="Select logo" name="logo"
+											formControlName="logo" *ngIf="isEditable.generalInfo">
+										  <div class="input-group-append" *ngIf="isEditable.generalInfo">
+											<span class="input-group-text"><i class="zmdi zmdi-upload"></i></span>
+										  </div>
+										  <img src="{{ generalInfo?.logo|| '' }}" class="inline-img-style" *ngIf="!isEditable.generalInfo">
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('logo').touched  && generalInfoForm.get('logo').hasError('required')">Please
+										  select logo</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Favicon</label>
+										<div class="input-group">
+										  <input type="file" class="form-control" #favicon placeholder="Select Favicon" name="favicon"
+											formControlName="favicon" *ngIf="isEditable.generalInfo">
+										  <div class="input-group-append" *ngIf="isEditable.generalInfo">
+											<span class="input-group-text"><i class="zmdi zmdi-upload"></i></span>
+										  </div>
+										  <img src="{{ generalInfo?.favicon|| '' }}" class="inline-img-style" *ngIf="!isEditable.generalInfo">
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('favicon').touched  && generalInfoForm.get('favicon').hasError('required')">Please
+										  select favicon</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Organization Picture</label>
+										<div class="input-group">
+										  <input type="file" class="form-control" #organizationPicture placeholder="Select Organization Picture"
+											name="organizationPicture" formControlName="organizationPicture"  *ngIf="isEditable.generalInfo">
+										  <div class="input-group-append"  *ngIf="isEditable.generalInfo">
+											<span class="input-group-text"><i class="zmdi zmdi-upload"></i></span>
+										  </div>
+										  <img src="{{ generalInfo?.organizationPicture|| '' }}" class="inline-img-style" *ngIf="!isEditable.generalInfo">
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('organizationPicture').touched  && generalInfoForm.get('organizationPicture').hasError('required')">Please
+										  select Organization Picture</span>
+									  </div>
+
+									  <div class="mb-3 col-sm-6">
+										<label>Organization Name</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter Organization Name" name="organizationName"
+											formControlName="organizationName" required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('organizationName').touched  && generalInfoForm.get('organizationName').hasError('required')">Please
+										  enter organization name</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Domain Name</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter Domain Name" name="domainName"
+											formControlName="domainName"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-dns"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('domainName').touched  && generalInfoForm.get('domainName').hasError('required')">Please
+										  enter domain name</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Address</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter address" name="address"
+											formControlName="address" required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-pin"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('address').touched  && generalInfoForm.get('address').hasError('required')">Please
+										  enter address</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>City</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter City" name="city" formControlName="city" 
+											required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-pin"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('city').touched  && generalInfoForm.get('city').hasError('required')">Please
+										  enter city</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>State</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter state" name="state" formControlName="state"
+										   required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-pin"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('state').touched  && generalInfoForm.get('state').hasError('required')">Please
+										  enter state</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Country</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter Country" name="country"
+											formControlName="country"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-pin"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('country').touched  && generalInfoForm.get('country').hasError('required')">Please
+										  enter country</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Zip Code</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter zipCode" name="zipCode"
+											formControlName="zipCode"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-pin"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('zipCode').touched  && generalInfoForm.get('zipCode').hasError('required')">Please
+										  enter zipcode</span>
+										  <span class="error" *ngIf="generalInfoForm.get('zipCode').touched  && generalInfoForm.get('zipCode').hasError('pattern')">Please
+											  enter Valid zipcode</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Phone Number</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter phone number" name="phone"
+											formControlName="phone"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-phone"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('phone').touched  && generalInfoForm.get('phone').hasError('required')">Please
+										  enter phone number</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Registration Number</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter Registration Number" name="registrationNumber"
+											formControlName="registrationNumber"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-tag"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('registrationNumber').touched  && generalInfoForm.get('registrationNumber').hasError('required')">Please
+										  enter Registration Number</span>
+									  </div>
+									  
+									  <div class="mb-3 col-sm-6">
+										<label>Coin Name</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter Coin Name" name="coinName"
+											formControlName="coinName"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-tag-more"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('coinName').touched  && generalInfoForm.get('coinName').hasError('required')">Please
+										  enter coin name</span>
+									  </div>
+									  <div class="mb-3 col-sm-6">
+										<label>Home Page Leaflet Text</label>
+										<div class="input-group">
+										  <input type="text" class="form-control" placeholder="Enter home page leaflet text" name="homePageLeafletText"
+											formControlName="homePageLeafletText"  required>
+										  <div class="input-group-append">
+											<span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+										  </div>
+										</div>
+										<span class="error" *ngIf="generalInfoForm.get('homePageLeafletText').touched  && generalInfoForm.get('homePageLeafletText').hasError('required')">Please
+										  enter home page leaflet text</span>
+									  </div>
+									</div>
+									<div class="text-right">
+									  <button mat-button type="submit" class="btn btn-primary" *ngIf="isEditable.generalInfo"> SAVE</button>
+									</div>
+								  </form>
+				  
+
+								<!-- <div class="row">
+
+									<div class="row update-template">
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Logo</label>
+												<p> <img src="{{generalInfo?.logo}}"> </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Favicon</label>
+												<p> <img src="{{generalInfo?.favicon}}"> </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Organization Picture</label>
+												<p> <img src="{{generalInfo?.organizationPicture}}"> </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Organization Name</label>
+												<p> {{ generalInfo?.organizationName || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Domain Name</label>
+												<p> {{ generalInfo?.domainName || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Address</label>
+												<p> {{ generalInfo?.address || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>City</label>
+												<p> {{ generalInfo?.city || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>State</label>
+												<p> {{ generalInfo?.state || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Country</label>
+												<p> {{ generalInfo?.country || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Zip Code</label>
+												<p> {{ generalInfo?.zipCode || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Phone Number</label>
+												<p> {{ generalInfo?.phone || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Registration Number</label>
+												<p> {{ generalInfo?.registrationNumber || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Coin Name</label>
+												<p> {{ generalInfo?.coinName || '' }} </p>
+											</div>
+										</div>
+
+										<div class="col-sm-4 box">
+											<div class="innerbox">
+												<label>Home Page Leaflet Text</label>
+												<p> {{ generalInfo?.homePageLeafletText || '' }} </p>
+											</div>
+										</div>
+									</div>
+								</div>  -->
+								<!-- End of row -->
+
+							</mat-step>
+							<!-- General Info TAB Start -->
+
+							<!-- Localization Info TAB START -->
+							<mat-step>
+								<ng-template matStepLabel>Localization</ng-template>
+								<h3>Localization Information 
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.localizationInfo"
+											(click)="enableEditMode('localizationInfo')"> 
+										Edit
+									</button>
+								</h3>
+								<form [formGroup]="localizationInfoForm" (submit)="updateLocalizationInfo()">
+									<div class="row " [ngClass]="{'readonly-section':!isEditable.localizationInfo}">
+										<div class="mb-3 col-sm-6">
+											<label>Date Format</label>
+											<div class="input-group">
+												<select formControlName="dateFormat" class="form-control">
+													<!-- <option value="" [(ngModel)]="dateFormat"></option> -->
+													<option *ngFor="let dateFormat of dateFormats; let i=index"
+														[ngValue]="dateFormat">
+														{{dateFormat}}
+													</option>
+												</select>
+											</div>
+											<span class="error"
+												*ngIf="localizationInfoForm.get('dateFormat').touched  && localizationInfoForm.get('dateFormat').hasError('required')">Please
+												Select Date Format</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label>Time Format</label>
+											<div class="input-group">
+												<select formControlName="timeFormat" class="form-control">
+													<!-- <option value="" [(ngModel)]="timeFormat"></option> -->
+													<option *ngFor="let timeFormat of timeFormats; let i=index"
+														[ngValue]="timeFormat">
+														{{timeFormat}}
+													</option>
+												</select>
+											</div>
+											<span class="error"
+												*ngIf="localizationInfoForm.get('timeFormat').touched  && localizationInfoForm.get('timeFormat').hasError('required')">Please
+												Select Time Format</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label>Timezone</label>
+											<div class="input-group">
+												<select formControlName="timeZone" class="form-control">
+													<!-- <option value="" [(ngModel)]="timeFormat"></option> -->
+													<option *ngFor="let timeZone of timeZones; let i=index"
+														[ngValue]="timeZone" >{{timeZone}}
+													</option>
+												</select>
+											</div>
+											<span class="error"
+												*ngIf="localizationInfoForm.get('timeZone').touched  && localizationInfoForm.get('timeZone').hasError('required')">Please
+												enter timezone</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label>Default Language</label>
+											<div class="input-group">
+												<input type="text" class="form-control"
+													placeholder="Enter Default Language" name="defaultLanguage"
+													formControlName="defaultLanguage" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-book"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="localizationInfoForm.get('defaultLanguage').touched  && localizationInfoForm.get('defaultLanguage').hasError('required')">Please
+												enter Language</span>
+										</div>
+									</div>
+									<div class="text-right">
+										<button mat-button type="submit" class="btn btn-primary btn-save"
+											*ngIf="isEditable.localizationInfo"> Save</button>
+										
+									</div>
+								</form>
+							</mat-step>
+							<!-- Localization Info TAB END -->
+
+							<!-- Email Info TAB START -->
+							<mat-step>
+								<ng-template matStepLabel>Email Settings </ng-template>
+								<h3>Email Settings 
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.emailSetting"
+											(click)="enableEditMode('emailSetting')"> 
+										Edit
+									</button>
+								</h3>
+								<form [formGroup]="emailSettingForm" (submit)="updateEmailSettingInfo()">
+									<div class="row" [ngClass]="{'readonly-section':!isEditable.emailSetting}">
+
+										<div class="mb-3 col-sm-6">
+											<label for="">User Name</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter user name"
+													name="userName" formControlName="userName" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i
+															class="zmdi zmdi-account-circle"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="emailSettingForm.get('userName').touched  && emailSettingForm.get('userName').hasError('required')">Please
+												enter user name</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label for="">Host</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter host"
+													name="host" formControlName="host" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-case"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="emailSettingForm.get('host').touched  && emailSettingForm.get('host').hasError('required')">Please
+												enter host</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label for="">Password</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter password"
+													name="password" formControlName="password" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="emailSettingForm.get('password').touched  && emailSettingForm.get('password').hasError('required')">Please
+												enter password</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label for="">Port</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter port"
+													name="port" formControlName="port" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-case"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="emailSettingForm.get('port').touched  && emailSettingForm.get('port').hasError('required')">Please
+												enter port</span>
+										</div>
+
+									</div>
+									<div class="text-right">
+										<button mat-button type="submit" class="btn btn-primary btn-save"
+											*ngIf="isEditable.emailSetting"> Save</button>
+									</div>
+								</form>
+							</mat-step>
+							<!-- Email Info TAB END -->
+
+							<!-- Google API Info TAB START -->
+							<mat-step>
+								<ng-template matStepLabel>Google API Settings</ng-template>
+								<h3>Google API Settings
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.googleApiSetting"
+											(click)="enableEditMode('googleApiSetting')"> 
+										Edit
+									</button>
+								</h3>
+								<form [formGroup]="googleSettingInfoForm" (submit)="updateGoogleSettingInfo()">
+									<div class="row" [ngClass]="{'readonly-section':!isEditable.googleApiSetting}">
+										<div class="mb-3 col-sm-6">
+											<label for="">API Key</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter API Key"
+													name="apiKey" formControlName="apiKey" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-key"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="googleSettingInfoForm.get('apiKey').touched  && googleSettingInfoForm.get('apiKey').hasError('required')">Please
+												enter API key</span>
+										</div>
+										<div class="mb-3 col-sm-6">
+											<label for="">Client ID</label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter Client Id"
+													name="clientId" formControlName="clientId" required>
+												<div class="input-group-append">
+													<span class="input-group-text"><i class="zmdi zmdi-key"></i></span>
+												</div>
+											</div>
+											<span class="error"
+												*ngIf="googleSettingInfoForm.get('clientId').touched  && googleSettingInfoForm.get('clientId').hasError('required')">Please
+												enter client id</span>
+										</div>
+										
+									</div>
+									<div class="text-right">
+										<button mat-button type="submit" class="btn btn-primary btn-save"
+										*ngIf="isEditable.googleApiSetting"> Save</button>
+									</div>
+								</form>
+							</mat-step>
+							<!-- Google API Info TAB END -->
+
+
+
+							<!-- API Field Config Info TAB START -->
+							<mat-step>
+								<ng-template matStepLabel>API Field Config</ng-template>
+								<h3>API Field Config 
+									<!-- <button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.apiFieldConfig"
+											(click)="enableEditMode('apiFieldConfig')"> 
+										Edit
+									</button> -->
+								</h3>
+								<form [formGroup]="apiFieldConfigForm" (submit)="updateApiFieldConfigInfo();">
+									<div class="row" [ngClass]="{'readonly-section':!isEditable.apiFieldConfig}">
+										<div class="table-responsive">
+											<table class="table">
+												<thead>
+													<tr>
+														<th style="white-space:nowrap; float:center; width:8%;">Sequence
+														</th>
+														<th style="white-space:nowrap; float:center">Fields</th>
+														<th style="white-space:nowrap; float:center">System Uniqueness
+														</th>
+														<th style="white-space:nowrap; float:center">Blockchain</th>
+														<th style="white-space:nowrap; float:center">Listing</th>
+														<th style="white-space:nowrap; float:center">Details</th>
+														<th style="white-space:nowrap; float:center">Comparative
+															Uniqueness</th>
+													</tr>
+												</thead>
+
+
+												<tbody formArrayName="apiFields">
+													<tr [formGroupName]="i"
+														*ngFor="let item of (apiFieldConfigForm.get('apiFields'))['controls']; let i = index;">
+														<td><input type="text" class="form-control"
+																placeholder="Enter Sequence" formControlName="sequence">
+														</td>
+														<td><input type="text" class="form-control"
+																placeholder="Enter Name" formControlName="name"
+																readonly></td>
+														<td><input type="checkbox" class="form-control"
+																formControlName="systemUniqueness" checked>
+														</td>
+														<td><input type="checkbox" class="form-control"
+																formControlName="blockchain"></td>
+														<td><input type="checkbox" class="form-control"
+																formControlName="listing"></td>
+														<td><input type="checkbox" class="form-control"
+																formControlName="details"></td>
+														<td><input type="checkbox" class="form-control"
+																formControlName="comparativeUniqueness"></td>
+													</tr>
+												</tbody>
+
+											</table>
+										</div>
+									</div>
+									<div class="text-right">
+										<button mat-button type="submit" class="btn btn-primary btn-save"
+											*ngIf="isEditable.apiFieldConfig"> Save</button>
+									</div>
+								</form>
+							</mat-step>
+							<!-- API Field Config Info TAB END -->
+
+							<!-- Certificate Access Trigger Info TAB START -->
+							<mat-step>
+								<ng-template matStepLabel>Certificate Access Trigger</ng-template>
+								<h3>Certificate Access Trigger
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.certificateAccessTrigger"
+											(click)="enableEditMode('certificateAccessTrigger')"> 
+										Edit
+									</button>
+								</h3>
+								<form [formGroup]="certificateAccessForm" (submit)="updateCertificateAccessInfo()">
+									<div class="row" [ngClass]="{'readonly-section':!isEditable.certificateAccessTrigger}">
+										<div class="mb-3" [ngClass]="{'col-sm-12':!showAccessStatus,'col-sm-6':showAccessStatus}">
+											<label for="">Access Type</label>
+											<div class="input-group">
+
+												<select class="form-control" name="accessType" formControlName="accessType"
+													required (change)="accessTriggerChange($event.target.value)">
+													<option value="">Select Access Type</option>
+													<option value="1" [selected]="selectedAccessType == 1">Access on
+														Certificate Convocation</option>
+													<option value="2" [selected]="selectedAccessType == 2">Access on Status
+														Change</option>
+												</select>
+
+											</div>
+											<span class="error"
+												*ngIf="certificateAccessForm.get('accessType').touched  && certificateAccessForm.get('accessType').hasError('required')">Please
+												select access type</span>
+										</div>
+
+										<div class="mb-3 col-sm-6" *ngIf="showAccessStatus==true">
+											<label for="">Access Value </label>
+											<div class="input-group">
+												<input type="text" class="form-control" placeholder="Enter Access Value"
+													name="accessCondition" formControlName="accessCondition">
+
+											</div>
+
+										</div>
+										
+									</div>	
+									<div class="text-right">
+										<button mat-button type="submit" class="btn btn-primary btn-save"
+										*ngIf="isEditable.certificateAccessTrigger"> Save</button>
+									</div>
+								</form>
+							</mat-step>
+							<!-- Certificate Access Trigger Info TAB END -->
+
+							<!-- Blockchain Info TAB START -->
+							<!-- <mat-step>
+								<ng-template matStepLabel>Blockchain</ng-template>
+								<h3>Blockchain
+									<button mat-button type="button" class="btn btn-primary btn-save btn-sm"
+											*ngIf="!isEditable.blockchain"
+											(click)="enableEditMode('blockchain')"> 
+										Edit
+									</button>
+								</h3>
+								<div class="row" [ngClass]="{'readonly-section':!isEditable.blockchain}">
+									<div class="mb-3 col-sm-6">
+										<label for="">Mainnet Certificate Store Address</label>
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="Mainnet Certificate Store Address" name="mainnet" readonly
+												value="{{ blockchainInfo?.certificateStore?.mainnet }}">
+											<div class="input-group-append">
+												<span class="input-group-text"><i class="zmdi zmdi-tag"></i></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="mb-3 col-sm-6">
+										<label for="">Uniblocknet Certificate Store Address</label>
+										<div class="input-group">
+											<input type="text" class="form-control"
+												placeholder="Uniblocknet Certificate Store Address" name="uniblocknet"
+												readonly value="{{ blockchainInfo?.certificateStore?.uniblocknet }}">
+											<div class="input-group-append">
+												<span class="input-group-text"><i class="zmdi zmdi-tag"></i></span>
+											</div>
+										</div>
+									</div>
+
+									<div class="mb-3 col-sm-6">
+										<label for="">Certificate Quota Balance</label>
+										<div class="input-group">
+											<input type="text" class="form-control" placeholder="Certificate Quota Balance"
+												name="certificateIssuanceQuota" readonly
+												value="{{ blockchainInfo?.certificateIssuanceQuota }} Left">
+											<div class="input-group-append">
+												<span class="input-group-text"><i class="zmdi zmdi-tag"></i></span>
+											</div>
+										</div>
+									</div>
+								</div>	
+							</mat-step> -->
+							<!-- Blockchain Info TAB END -->
+
+						</mat-horizontal-stepper>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

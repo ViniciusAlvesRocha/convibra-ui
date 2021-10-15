@@ -1,0 +1,33 @@
+.input-group.course-add-bt input{height: 42px;}
+.input-group.course-add-bt .btn-primary{height: 42px; margin-left: 10px; margin-top: 0;}
+.input-group.course-add-bt .input-group-append{height: 42px;}
+.error {
+    color: #ee2558;
+    font-size: 12px;
+    position: absolute;
+    bottom: -20px;
+}
+
+td i{
+    margin: 0px 6px;
+}
+
+.table td, .table th{
+    font-size: 12px;padding: 5px;
+}
+button.btn.btn-icon.btn-icon-mini.btn-round.btn-danger {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    line-height: normal;
+    padding: 0;
+    min-width: 25px; margin: 0 2px;
+}
+button.btn.btn-icon.btn-icon-mini.btn-round.btn-primary {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    line-height: normal;
+    padding: 0;
+    min-width: 25px; margin: 0 2px;
+}

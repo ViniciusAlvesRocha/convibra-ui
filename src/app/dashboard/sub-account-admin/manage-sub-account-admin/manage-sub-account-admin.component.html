@@ -1,0 +1,118 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-sm-12 top-breadcrumb">
+                    <h2>Sub Account Admins</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item active">Sub Account Admins</li>
+                    </ul>
+                    <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+                            class="zmdi zmdi-sort-amount-desc"></i></button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="float-right mb-2">
+                                <span class="btn btn-success" (click)="ngOnInit();"  title="Refresh">
+                                    <i class="zmdi zmdi-refresh-alt"></i> Refresh
+                                </span>
+                                <span class="btn btn-primary" routerLink="/dashboard/sub-account-admin/add"  title="Create Sub Account Admin">
+                                    <i class="zmdi zmdi-plus-circle"></i> Add Sub-Account-Admin
+                                </span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+
+                                        <tr>
+                                            <th colspan="2">
+                                                <input class="form-control" type="text" (keyup)="filterRecords()" name="firstName"
+                                                    [(ngModel)]="searchTerm['firstName']" autocomplete="off"
+                                                    placeholder="First Name">
+                                            </th>
+                                            <th colspan="2">
+                                                <input class="form-control" type="text" (keyup)="filterRecords()" name="lastName"
+                                                    [(ngModel)]="searchTerm['lastName']" autocomplete="off" placeholder="Last Name">
+                                            </th>
+                                            <th colspan="4">
+                                                <input class="form-control" type="text" (keyup)="filterRecords()" name="email"
+                                                    [(ngModel)]="searchTerm['email']" autocomplete="off" placeholder="Email">
+                                            </th>
+                                        </tr>
+
+                                        <tr>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Registered Date</th>
+                                            <th>Email Verified</th>
+                                            <th>Account Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of userList;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{user.firstName}}</td>
+                                            <td>{{user.lastName}}</td>
+                                            <td>{{user.email}}</td>
+                                            <td>{{user.date | date:'dd MMM yy hh:mm a'}}</td>
+                                            <td [ngClass]="{'red-text':!user.isEmailVerified,'green-text':user.isEmailVerified}">
+                                                {{parseEmailVerified(user.isEmailVerified)}}</td>
+                                            <td [ngClass]="{'red-text':!user.isAccountEnabled,'green-text':user.isAccountEnabled}">
+                                                {{parseAccountStatus(user.isAccountEnabled)}}</td>
+                                            <td class="actiontd">
+                                                <span><a routerLink="/dashboard/sub-account-admin/edit/{{ user._id }}" class="zmdi zmdi-edit" title="Edit"></a></span>
+                                                <span *ngIf="user.isAccountEnabled" (click)="openChangeAccountStatus(user)"><i
+                                                        title="Disable Account" class="zmdi zmdi-lock"></i></span>
+                                                <span class="green-text" *ngIf="!user.isAccountEnabled" (click)="openChangeAccountStatus(user)"><i
+                                                        title="Enable Account" class="zmdi zmdi-check-circle-u"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="userList?.length == 0">
+                                            <td colspan="9" align="center"> Record Not Exist</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows -->
+            <div class="pagination_div" [hidden]="userList.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage"
+                    [boundaryLinks]="true">
+                </ngb-pagination>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="toggleAccount" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">{{accountStatus}} Account</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <strong>{{accountStatus}}</strong> {{accountUserName}}'s Account ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="toggleAccountStatus(currentUserId,accountChangeStatus)" class="btn btn-danger waves-effect">Yes</button>
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>

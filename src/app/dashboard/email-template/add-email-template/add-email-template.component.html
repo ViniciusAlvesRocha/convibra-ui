@@ -1,0 +1,130 @@
+<section class="content">
+	<div class="body_scroll">
+		<div class="block-header">
+			<div class="row">
+				<div class="col-lg-7 col-md-6 col-sm-12">
+					<h2>Email Template</h2>
+					<ul class="breadcrumb">
+						
+						<li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+						<li class="breadcrumb-item"><a routerLink="/dashboard/email-template/">Email Template</a>
+						</li>
+						<li class="breadcrumb-item active">Add Email Template</li>
+					</ul>
+					<button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+							class="zmdi zmdi-sort-amount-desc"></i></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<!-- Vertical Layout -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="card">
+						<div class="header">
+							<h2>Add Email Template</h2>
+						</div>
+						<div class="body">
+							<form [formGroup]="addEmailTemplateForm" (ngSubmit)="addEmailTemplate();" action="">
+								<div class="row">
+
+									<div class="mb-3 col-sm-12">
+										<label>Template Name</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="templateName"
+												formControlName="templateName" placeholder="Enter Email Template Name">
+											<div class="input-group-append">
+												<span class="input-group-text">
+													<i class="zmdi zmdi-account-circle"></i>
+												</span>
+											</div>
+										</div>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateName').touched  && addEmailTemplateForm.get('templateName').hasError('required')">Please
+											enter email template name</span>
+									</div>
+
+									<div class="mb-3 col-sm-12">
+										<label>Template Subject</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="templateSubject" formControlName="templateSubject"
+												placeholder="Enter Email Template Subject">
+											<div class="input-group-append">
+												<span class="input-group-text">
+													<i class="zmdi zmdi-account-circle"></i>
+												</span>
+											</div>
+										</div>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateSubject').touched  && addEmailTemplateForm.get('templateSubject').hasError('required')">Please
+											enter email template subject</span>
+									</div>
+
+									<div class="mb-3 col-sm-12">
+										<label>Template From</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="templateFrom" formControlName="templateFrom"
+												placeholder="Enter Email Template From">
+											<div class="input-group-append">
+												<span class="input-group-text">
+													<i class="zmdi zmdi-account-circle"></i>
+												</span>
+											</div>
+										</div>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateFrom').touched  && addEmailTemplateForm.get('templateFrom').hasError('required')">Please
+											enter email template from</span>
+									</div>
+
+									<div class="mb-3 col-sm-12">
+										<label>Template From Email</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="templateFromEmail" formControlName="templateFromEmail"
+												placeholder="Enter Email Template From Email">
+											<div class="input-group-append">
+												<span class="input-group-text">
+													<i class="zmdi zmdi-account-circle"></i>
+												</span>
+											</div>
+										</div>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateFromEmail').touched  && addEmailTemplateForm.get('templateFromEmail').hasError('required')">Please
+											enter email template from email</span>
+											<span class="error" *ngIf="addEmailTemplateForm.get('templateFromEmail').hasError('email')">Email address must be valid</span>
+									</div>
+
+									<div class="mb-3 col-sm-12">
+										<label>Template Html</label>
+										<angular-editor name="templateHtml" formControlName="templateHtml" placeholder="Enter Email Template Html" id="templateHtml" [config]="editorConfig"></angular-editor>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateHtml').touched  && addEmailTemplateForm.get('templateHtml').hasError('required')">Please
+											enter email template html</span>
+									</div>
+
+									<div class="mb-3 col-sm-12 account-admin-addmore-dflex" *ngFor="let templateVariables of templateVariableFields; let _index = index;">
+										<label>Template Variables</label>
+										<div class="input-group">
+											<input type="text" class="form-control" name="templateVariables[]" formControlName="templateVariables"
+												placeholder="Enter Email Template Variables" (keyup)="syncField(_index,'templateVariables',$event)">
+										</div>
+										<span class="error"
+											*ngIf="addEmailTemplateForm.get('templateVariables').touched  && addEmailTemplateForm.get('templateVariables').hasError('required')">Please
+											enter email template variables</span>
+										
+											<button class="btn btn-primary waves-effect" type="button" title="Add More" (click)="addTemplateVariable()" *ngIf="_index == 0"><i class="zmdi zmdi-plus"></i></button>
+											<button class="btn btn-secondary waves-effect" type="button" title="Remove" (click)="removeTemplateVariables(_index)" *ngIf="_index != 0"><i class="zmdi zmdi-minus"></i></button>
+									</div>					
+
+									
+
+								</div>
+								<app-module-action [submitTitle]="'Save'" [showBack]="true"></app-module-action>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

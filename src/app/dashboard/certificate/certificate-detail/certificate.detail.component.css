@@ -1,0 +1,35 @@
+/* .qrcode{
+    padding: 90px;
+} */
+
+.margin-10{
+    margin: 8px;
+}
+.pul-right{float: right; color: #fff !important;}
+.clr{clear: both;}
+/* .table th{font-size: 11px;}
+ .table td{
+    font-size: 12px;
+} */
+.claimed-btn{
+    padding: 4px 20px; background-color: #ee2658;
+    display: inline-block; color: #fff; border-radius: 3px;
+}
+.claimed-btn-success{
+    padding: 4px 20px; background-color: #2cbe5b;
+    display: inline-block; color: #fff; border-radius: 3px;
+}
+.titleheading{
+    color: #777;font-size: 15px; text-transform: capitalize;
+}
+.badge {
+    padding: 5px 10px !important;
+    font-size: 10px !important;
+    display: inline-block;
+    width: auto;
+}
+iframe {height:100vh;}
+.card{
+    margin-bottom:0px;
+}
+

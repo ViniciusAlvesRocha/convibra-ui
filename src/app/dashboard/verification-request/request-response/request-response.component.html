@@ -1,0 +1,59 @@
+<section class="content">
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-lg-7 col-md-6 col-sm-12">
+          <h2>Verification Messages</h2>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+            <li class="breadcrumb-item"><a routerLink="/dashboard/certificate/shared">Certificate</a></li>
+            <li class="breadcrumb-item active">Verification Request-Response</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Hover Rows -->
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="card">
+            <div class="body">
+              <div class="float-right mb-2">
+                <button class="btn btn-success" (click)="ngOnInit();">
+                  <i class="zmdi zmdi-refresh-alt"></i> Refresh
+                </button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Certificate Id</th>
+                      <th>Request Message</th>
+                      <th>Response Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let certificate of verificationMessages?.data;let i=index">
+                      <th scope="row">{{i+1}}</th>
+                      <td>{{certificate?.certificateId}}</td>
+                      <td>{{certificate?.requestMessage}}</td>
+                      <td>{{certificate?.responseMessage}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- #END# Hover Rows  (click)="requestForVerification(certificate?.certificateId?._id)" -->
+      <div class="pagination_div" [hidden]="verificationMessages?.data.length==0">
+        <span>Showing {{verificationMessages?.data.length}} entries</span>
+        <!-- <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [boundaryLinks]="true"></ngb-pagination> -->
+      </div>
+    </div>
+  </div>
+</section>

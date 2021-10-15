@@ -1,0 +1,152 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Bulk Import : Recipients</h2>
+                    <ul class="breadcrumb">
+                        
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <!-- <li class="breadcrumb-item"><a routerLink="/dashboard/bulkimport/recipient">Bulk Import(s)</a></li> -->
+                        <li class="breadcrumb-item active">Bulk Import : Recipients</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="float-left mb-2">
+                                <select class="form-control" [(ngModel)]="filter['recipientImportType']" (change)="ngOnInit()">
+                                    <option value="ALL">All</option>
+                                    <option value="CSV">CSV</option>
+                                    <option value="API">API</option>
+                                </select>
+                            </div>
+                            <div class="float-right mb-2">
+                                <button class="btn btn-success" (click)="ngOnInit();"><i class="zmdi zmdi-refresh-alt"></i> Refresh</button>
+                                <button class="btn btn-primary" routerLink="/dashboard/bulkimport/recipient/add"><i class="zmdi zmdi-plus-circle"></i> Add
+                                    Bulk Recipient</button>
+                                
+                                <!--                            routerLink="/dashboard/bulkimport/recipient/add"   
+                                <button class="btn btn-success" *ngIf="autoRefresh" (click)="toggleAutoRefresh()">Auto Refresh: On</button>
+                                <button class="btn btn-warning" *ngIf="!autoRefresh" (click)="toggleAutoRefresh()">Auto Refresh: Off</button> -->
+
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tag</th>
+                                            <th>Started At</th>
+                                            <th>Completed At</th>
+                                            <th>Total Record(s)</th>
+                                            <th>Import Type</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let queue of queueList;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{queue.tag}}</td>
+                                            <td>{{queue.stats['startedAt'] | date:'medium' || 'NA'}}</td>
+                                            <td>{{queue.stats['completedAt'] | date:'medium' || 'NA'}}</td>
+                                            <td>{{queue.stats['totalRecords'] || 'NA'}}</td>
+                                            <td>{{queue.recipientImportType || 'NA'}}</td>
+                                            <div>
+                                                <td *ngIf="queue.jobProcessStatus == 'SUCCEEDED'" style="color:green">SUCCESS</td>
+                                                <td *ngIf="queue.jobProcessStatus == 'PENDING'" style="color:rgb(212, 150, 33)">PENDING</td>
+                                                <td *ngIf="queue.jobProcessStatus == 'FAILED'" style="color:red">FAILED</td>
+                                                <td *ngIf="queue.jobProcessStatus == 'PROCESSING'" style="color:orange">PROCESSING</td>
+                                            </div>
+
+                                            <td>
+                                                <button class="btn btn-success" (click)="setCurrentQueue(queue)">View
+                                                    Log</button>
+                                            </td>
+
+                                        </tr>
+                                        <tr *ngIf="queueList?.length == 0">
+											<td colspan="8" align="center"> Record Not Exist</td>
+										</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows -->
+            <div class="pagination_div" [hidden]="queueList?.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage"
+                    [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- <div class="modal fade" id="bulkRecipientModal" tabindex="-1" role="dialog">
+    <form class="card auth_form" #csvUploadForm="ngForm" (submit)="uploadCsvFile()" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">UPLOAD CSV FILE</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <small><strong>NOTE: CSV file should have these headers:
+                                <p>nationalID | firstName | lastName | email | mobileNumber | personalAddress | status | program | batch | convocationDate | result</p>
+                            </strong></small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Upload csv file</h2>
+                            </div>
+                            <div class="body">
+                                <input type="file" #fileInput class="dropify" [(ngModel)]="csvFile" name="file" #file="ngModel"
+                                    (change)="handleFileInput($event.target.files)" required>
+                                <br>
+                                <input class="form-control" type="text" [(ngModel)]="tag" name="tag" required
+                                    placeholder="Unique Tag for Import" />
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="file.errors?.required && csvUploadForm.submitted">Please upload
+                            file</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+ -->
+<div class="modal fade" id="queueLogModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Import Log</h4>
+            </div>
+            <div class="modal-body">
+                <pre>{{ prettyJSON(currentQueue?.stats?.log) }}</pre>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+</div>

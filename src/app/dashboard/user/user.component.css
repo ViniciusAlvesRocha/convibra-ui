@@ -1,0 +1,22 @@
+td i{
+    margin: 0px 6px;
+}
+
+.table td, .table th{
+    font-size: 12px;padding: 5px;
+}
+.card .body{
+    padding: 10px 20px;
+}
+.badge {
+    padding: 5px 10px !important;
+    font-size: 10px !important;
+}
+.required{
+    color: red;
+}
+.frm-class {margin-bottom: 20px;}
+.frm-class label{
+    margin: 0px; font-size: 13px;
+}
+.frm-class textarea{height: 150px;}

@@ -1,0 +1,175 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header mb-0">
+            <div class="row">
+                <div class="col-sm-12 top-breadcrumb">
+                    <h2>Profile</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ul>
+                    <!-- <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+                            class="zmdi zmdi-sort-amount-desc"></i></button> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Vertical Layout -->
+            <div class="row clearfix profile">
+                <div class="col-lg-6 col-md-6 col-sm-12 left">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Profile Update
+                                <button type="button" class="btn btn-primary btn-save btn-sm"
+                                    *ngIf="!isEditable.profileInfo"
+                                    (click)="enableEditMode('profileInfo')"> 
+                                    Edit
+                                </button>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <!-- ADMIN-->
+                            <form [formGroup]="updateAccountSettingsForm" (ngSubmit)="updateAccountSettings()">
+                                <div [ngClass]="{'readonly-section':!isEditable.profileInfo}">
+                                    <div class="mb-3">
+                                        <label>First Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="First Name" name="firstName"
+                                                formControlName="firstName">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="zmdi zmdi-account-circle"></i></span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('firstName').touched  && updateAccountSettingsForm.get('firstName').hasError('required')">Please
+                                            enter first name</span>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label>Last Name</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Last Name" name="lastName" formControlName="lastName">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('lastName').touched  && updateAccountSettingsForm.get('lastName').hasError('required')">Please
+                                            enter last name</span>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label>Email</label>
+                                        <div class="input-group">
+                                            <input type="email" class="form-control" placeholder="Email" name="email" formControlName="email">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('email').touched  && updateAccountSettingsForm.get('email').hasError('required')">Please
+                                            enter email</span>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('email').touched  && updateAccountSettingsForm.get('email').hasError('email')">Please
+                                            enter valid email</span>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label>Mobile Number</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Mobile Number" name="mobileNumber"
+                                                formControlName="mobileNumber">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="zmdi zmdi-phone"></i></span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('mobileNumber').touched  && updateAccountSettingsForm.get('mobileNumber').hasError('required')">Please
+                                            enter mobile number</span>
+                                    </div>
+                                
+                                    <div class="mb-3">
+                                        <label>Personal Address</label>
+                                        <div class="input-group">
+                                            <textarea type="text" class="form-control" placeholder="Address" name="personalAddress"
+                                                formControlName="personalAddress"></textarea>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAccountSettingsForm.get('personalAddress').touched  && updateAccountSettingsForm.get('personalAddress').hasError('required')">Please
+                                            enter
+                                            your address</span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-raised btn-primary waves-effect" *ngIf="isEditable.profileInfo">UPDATE
+                                    PROFILE</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 right">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Update Password</h2>
+                        </div>
+                        <div class="body">
+                            <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()">
+
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" placeholder="Current password"
+                                            name="currentPassword" formControlName="currentPassword">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                        </div>
+                                    </div>
+                                    <span class="error"
+                                        *ngIf="updatePasswordForm.get('currentPassword').touched  && updatePasswordForm.get('currentPassword').hasError('required')">Please
+                                        enter current password</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" placeholder="New Password"
+                                            name="newPassword" formControlName="newPassword">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                        </div>
+                                    </div>
+                                    <span class="error"
+                                        *ngIf="updatePasswordForm.get('newPassword').touched && updatePasswordForm.get('newPassword').hasError('required')">Please
+                                        enter new password</span>
+                                    <span class="error"
+                                        *ngIf="updatePasswordForm.get('newPassword').touched && updatePasswordForm.get('newPassword').hasError('pattern')">Password
+                                        must have minimum 6 words, one special character and number</span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <div class="input-group">
+                                        <input type="password" class="form-control" placeholder="Confirm password"
+                                            name="confirmPassword" formControlName="confirmPassword">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                        </div>
+                                    </div>
+                                    <span class="error"
+                                        *ngIf="updatePasswordForm.get('confirmPassword').touched && updatePasswordForm.get('confirmPassword').hasError('required')">Please
+                                        Enter confirmed password</span>
+                                    <span class="error"
+                                        *ngIf="updatePasswordForm.get('confirmPassword').touched && updatePasswordForm.get('confirmPassword').value != updatePasswordForm.get('newPassword').value">Confirm
+                                        Confirm password should be same</span>
+
+                                </div>
+                                <button type="submit" class="btn btn-raised btn-primary waves-effect">UPDATE
+                                    PASSWORD</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,110 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>API Config Setting</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i>Dashboard</a></li>
+                        <li class="breadcrumb-item active">API Config Setting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Vertical Layout -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Update API Config Setting
+                                <button type="button" class="btn btn-primary btn-save btn-sm"
+                                    *ngIf="!isEditable.apiConfigInfo"
+                                    (click)="enableEditMode('apiConfigInfo')"> 
+                                    Edit
+                                </button>
+                            </h2>
+                        </div>
+                        <div class="body">
+                            <form [formGroup]="updateAPIConfigSettingForm" (ngSubmit)="updateAPIConfigSetting();"
+                                action="">
+                                <div class="row" [ngClass]="{'readonly-section':!isEditable.apiConfigInfo}">
+                                    <div class="mb-3 col-sm-6">
+                                        <label>API URL</label>
+                                        <div class="input-group">
+                                            <input type="url" class="form-control" name="apiUrl"
+                                                formControlName="apiUrl" placeholder="Enter API URL">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="zmdi zmdi-account-circle"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="error" *ngIf="updateAPIConfigSettingForm.get('apiUrl').touched  && updateAPIConfigSettingForm.get('apiUrl').hasError('required')">Please
+                                            enter API URL</span>
+                                        <span class="error" *ngIf="updateAPIConfigSettingForm.get('apiUrl').touched  && updateAPIConfigSettingForm.get('apiUrl').hasError('pattern')">Please enter valid API URL</span>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>Schedule Call</label>
+                                        <div class="input-group">
+                                            <select class="form-control" id="scheduleType" name="scheduleType"
+                                                formControlName="scheduleType">
+                                                <option value="">Select Schedule Call</option>
+                                                <option value="DAILY">DAILY</option>
+                                                <option value="WEEKLY">WEEKLY</option>
+                                                <option value="MONTHLY">MONTHLY</option>
+                                            </select>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAPIConfigSettingForm.get('scheduleType').touched &&  updateAPIConfigSettingForm.get('scheduleType').hasError('required')">Please
+                                            select schedule type</span>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>Schedule Time</label>
+                                        <div class="input-group">
+                                            <input type="text" id="scheduleTime" class="form-control" name="scheduleTime"
+                                                formControlName="scheduleTime" placeholder="Enter Schedule Time">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="zmdi zmdi-account-circle"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAPIConfigSettingForm.get('scheduleTime').touched  && updateAPIConfigSettingForm.get('scheduleTime').hasError('required')">Please
+                                            enter Schedule Time</span>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>Header Value</label>
+                                        <div class="input-group">
+                                            <textarea class="form-control" name="headerValue"
+                                                formControlName="headerValue"
+                                                placeholder="Enter Header Value"></textarea>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="updateAPIConfigSettingForm.get('headerValue').touched  && updateAPIConfigSettingForm.get('headerValue').hasError('required')">Please
+                                            enter Header Value</span>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <div class="checkbox">
+                                             <input id="isEnabled" type="checkbox" name="isEnabled" formControlName="isEnabled" />
+                                            <label for="isEnabled">Enable Queue</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 text-center">
+                                    <button type="submit" class="btn btn-primary waves-effect" *ngIf="isEditable.apiConfigInfo">SAVE CHANGES</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,134 @@
+<div class="authentication">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <form class="card auth_form" [formGroup]="signupUserForm" (ngSubmit)="signupUser();" action="" novalidate>
+                    <div class="header">
+                        <img class="logo" src="{{ this.instanceSettingObj.logo }}" alt="">
+                        <h5>Sign Up</h5>
+                        <span>Register a new membership</span>
+                    </div>
+                    <div class="body">
+                       
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <select class="form-control show-tick"  name="role" formControlName="role" required>
+                                    <option value="" disabled> Select Role </option>
+                                    <!-- <option value="ROLE_RECIPIENT">Recipient</option> -->
+                                    <option value="ROLE_VERIFIER">Verifier</option>
+                                </select>
+                            </div>
+                            <span class="error" *ngIf="signupUserForm.get('firstName').touched  && signupUserForm.get('firstName').hasError('required')">Please select role</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="First Name" name="firstName"
+                                formControlName="firstName" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                </div>
+                            </div>
+                            <span class="error" *ngIf="signupUserForm.get('firstName').touched  && signupUserForm.get('firstName').hasError('required')">Please enter first name</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Last Name" name="lastName"
+                                formControlName="lastName" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                                </div>
+                            </div>
+                            <span class="error" *ngIf="signupUserForm.get('lastName').touched &&  signupUserForm.get('lastName').hasError('required')">Please enter last name</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="Email" name="email" formControlName="email" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                                </div>
+                            </div>
+                            <span class="error" *ngIf="signupUserForm.get('email').touched &&   signupUserForm.get('email').hasError('required')">Please enter email</span>
+						    <span class="error" *ngIf="signupUserForm.get('email').hasError('email')">Email address must be valid</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Mobile Number" 
+                                    name="mobileNumber" formControlName="mobileNumber" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-phone"></i></span>
+                                </div>
+                            </div>
+                            <span class="error" *ngIf="signupUserForm.get('mobileNumber').touched &&  signupUserForm.get('mobileNumber').hasError('required')">Please enter mobile number</span>
+                        </div>
+
+                       
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="password" class="form-control" placeholder="Password"
+                                    name="password" formControlName="password">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                </div>
+                            </div>
+                            <span class="error"
+                                *ngIf="signupUserForm.get('password').touched && signupUserForm.get('password').hasError('required')">Please
+                                enter new password</span>
+                            <span class="error"
+                                *ngIf="signupUserForm.get('password').touched && signupUserForm.get('password').hasError('pattern')">Password
+                                must have minimum 6 words, one special character and number</span>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="password" class="form-control" placeholder="Confirm password"
+                                    name="confirmPassword" formControlName="confirmPassword">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                </div>
+                            </div>
+                            <span class="error"
+                                *ngIf="signupUserForm.get('confirmPassword').touched && signupUserForm.get('confirmPassword').hasError('required')">Please
+                                enter confirm password</span>
+                            <span class="error"
+                                *ngIf="signupUserForm.get('confirmPassword').touched && signupUserForm.get('confirmPassword').hasError('pattern')">Confirm
+                                password must have minimum 6 words, one special character and number</span>
+                        </div>
+                       
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <textarea type="text" class="form-control" placeholder="Address"
+                                    name="personalAddress" formControlName="personalAddress"></textarea>
+                            </div>
+                            <span class="error"
+                                *ngIf="signupUserForm.get('personalAddress').touched  && signupUserForm.get('personalAddress').hasError('required')">Please
+                                enter your address</span>
+                        </div>
+                        
+                        <div class="checkbox">
+                            <input id="remember_me" type="checkbox" formControlName="checked" name="checked"
+                                required>
+                            <label for="remember_me">I read and agree to the <a href="javascript:void(0);">terms of
+                                    usage</a></label>
+                           <!--  <span class="error" *ngIf="checked.errors?.required && form.submitted">Please agree with
+                                our terms and conditions</span> -->
+                        </div>
+
+                        <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">SIGN UP</button>
+                        <div class="signin_with mt-3">
+                            <a class="link" routerLink="/">You already have a membership?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-8 col-sm-12">
+                <div class="card">
+                    <img src="assets/images/signup.svg" alt="Sign Up" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

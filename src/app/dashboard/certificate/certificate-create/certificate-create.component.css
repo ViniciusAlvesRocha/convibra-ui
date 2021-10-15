@@ -1,0 +1,77 @@
+.confirmation{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.w-100{
+    width:100%;
+}
+.form-control{margin-bottom: 20px;}
+.or-splitter{
+    display: flex;
+    justify-content: center;
+    color: #888484;
+}
+.or-splitter:after,
+.or-splitter:before{
+    content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+    text-decoration:line-through;
+}
+
+.or-splitter:after{
+    margin-left: 10px;
+}
+
+.or-splitter:before{
+    margin-right: 10px;
+}
+
+#noData{
+    text-align: center;
+}
+.radio-cert span{
+    display: inline-block; 
+}
+.radio-cert input{display: inline-block !important; }
+.input-group-text{height: 38px;}
+
+.mat-horizontal-stepper-header .mat-step-icon{
+    display: none !important;
+}
+.datepicker-clss input{
+    width: 100%;
+    height: 40px;
+    padding: 5px 10px;
+    border: 1px solid #ced4db;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #979797;
+}
+.datepicker-clss .mat-datepicker-toggle{
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #2b7ce6;
+    color: #fff;
+    height: 40px;
+    width: 40px; line-height: 40px;
+    border-radius: 5px;
+    line-height: 23px;
+}
+.datepicker-clss .mat-datepicker-toggle-default-icon{
+    width: 18px;
+}
+.datepicker-clss .mat-icon-button {
+    padding: 0;
+    min-width: 0;
+    width: 40px !important;
+    height: 40px !important;
+    flex-shrink: 0;
+    line-height: 40px !important;
+    border-radius: 0%;
+}
+
+
+

@@ -1,0 +1,703 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Users</h2>
+                    <ul class="breadcrumb">
+                        
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item active">Users</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                </div>
+            </div>
+        </div>
+       
+        <div class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="float-right mb-10">
+
+                                <span *ngIf="(currentUserRole=='ROLE_SUPER_ADMIN' || currentUserRole=='ROLE_DELEGATE_ADMIN') && accountID != 'false' &&  accountID != false">
+                                    <button class="btn btn-primary" routerLink="/dashboard/issuer/add">
+                                        Add Issuer
+                                    </button>&nbsp;
+                                    &nbsp;
+                                    <button class="btn btn-primary" routerLink="/dashboard/bulkimport/recipient">
+                                        Add Bulk Recipient
+                                    </button>&nbsp;
+                                    <button class="btn btn-primary" routerLink="/dashboard/apiImport/recipient">
+                                        API Import Recipient
+                                    </button>
+                                </span>
+
+                                <span *ngIf="currentUserRole=='ROLE_SUB_ADMIN'">
+                                    <button class="btn btn-primary" routerLink="/dashboard/issuer/add">
+                                        Add Issuer
+                                    </button>&nbsp;
+                                    
+                                    <button class="btn btn-primary" (click)="openAPIConfigModal()">
+                                        API Config
+                                    </button> &nbsp;
+                                    <button class="btn btn-primary" routerLink="/dashboard/bulkimport/recipient">
+                                        Add Bulk Recipient
+                                    </button>&nbsp;
+                                    <button class="btn btn-primary" routerLink="/dashboard/apiImport/recipient">
+                                        API Import Recipient
+                                    </button>
+                                    <!-- <button class="btn btn-primary" (click)="openBulkImportModal()">Bulk Import</button> -->
+                                </span>
+                                
+                                <span *ngIf="currentUserRole=='ROLE_SUPER_ADMIN'">
+                                    <button class="btn btn-primary" *ngIf="isSuperAdmin" (click)="openAddSuperUserModal()">
+                                        Add Super User
+                                    </button>
+                                    &nbsp;
+                                    <button class="btn btn-primary" routerLink="/dashboard/subadmin/add">
+                                        Add Sub-Admin
+                                    </button>
+                                </span>
+
+                                <span *ngIf="currentUserRole=='ROLE_DELEGATE_ADMIN'">
+                                    <button class="btn btn-primary" routerLink="/dashboard/subadmin/add">
+                                        Add Sub-Admin
+                                    </button>
+                                </span>
+                                   
+                                
+                                    
+                                
+                                <!-- <button class="btn btn-primary" (click)="openBulkRecipientModal()">Add
+                                        Bulk Recipient</button> -->
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Registered Date</th>
+                                            <th>Email Verified</th>
+                                            <th>Account Status</th>
+                                            <th>User Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let user of userList;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{user.firstName}}</td>
+                                            <td>{{user.lastName}}</td>
+                                            <td>{{user.email}}</td>
+                                            <td>{{user.date | date:'dd MMM yy hh:mm a'}}</td>
+                                            <td [ngClass]="{'red-text':!user.isEmailVerified,'green-text':user.isEmailVerified}">{{parseEmailVerified(user.isEmailVerified)}}</td>
+                                            <td [ngClass]="{'red-text':!user.isAccountEnabled,'green-text':user.isAccountEnabled}">{{parseAccountStatus(user.isAccountEnabled)}}</td>
+                                            <td><span class="badge" [ngClass]="{'badge-default':user.role=='ROLE_VERIFIER','badge-success':user.role=='ROLE_RECIPIENT','badge-warning':user.role=='ROLE_ISSUER','badge-danger':user.role=='ROLE_DELEGATE_ADMIN','badge-default':user.role=='ROLE_SUB_ADMIN'}">{{parseRole(user.role)}}</span></td>
+                                            <td>
+                                                <span *ngIf="user.role=='ROLE_ISSUER' && !user.issuerVerified" (click)="openApproveIssuerModal(user._id)"><i
+                                                        title="Approve Issuer" class="zmdi zmdi-check-circle"></i></span>
+                                                <span class="red-text" *ngIf="isSuperAdmin && user.isAccountEnabled"
+                                                    (click)="openChangeAccountStatus(user)"><i title="Disable Account"
+                                                        class="zmdi zmdi-close-circle"></i></span>
+                                                <span class="green-text" *ngIf="isSuperAdmin && !user.isAccountEnabled"
+                                                    (click)="openChangeAccountStatus(user)"><i title="Enable Account"
+                                                        class="zmdi zmdi-check-circle-u"></i></span>
+                                                <span *ngIf="user.role=='ROLE_SUB_ADMIN'"><a (click)="openUpdateSubAdminModal(user)" > Update</a> </span>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="userList?.length == 0" >
+                                            <td colspan="9" align="center"> Record Not Exist</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows -->
+            <div [hidden]="userList.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal Dialogs ====== -->
+<div class="modal fade" id="addSuperUser" tabindex="-1" role="dialog">
+    <form class="card auth_form" #superUserForm="ngForm" (submit)="addSuperUser(superUserForm)" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">ADD SUPER USER</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="First Name" [(ngModel)]="superUser.firstName"
+                                name="superFirstName" id="superFirstName" #superFirstName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="superFirstName.errors?.required && superUserForm.submitted">Please enter
+                            first
+                            name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Last Name" [(ngModel)]="superUser.lastName"
+                                name="superLastName" id="superLastName" #superLastName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="superLastName.errors?.required && superUserForm.submitted">Please enter
+                            last name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="superUser.email" id="superEmail" name="superEmail" #superEmail="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="superEmail.errors?.required && superUserForm.submitted">Please enter
+                            email</span>
+                        <span class="error" *ngIf="superEmail.errors?.email && superUserForm.submitted">Please enter
+                            valid
+                            email</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Dialogs for Add sub Admin ====== -->
+<!-- <div class="modal fade" id="addSubadmin" tabindex="-1" role="dialog">
+    <form class="card auth_form" #subAdminForm="ngForm" (submit)="addSubAdmin(subAdminForm)" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">ADD SUB-ADMIN</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="First Name"
+                                [(ngModel)]="subAdmin.firstName" name="subFirstName" id="subFirstName" #subFirstName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subFirstName.errors?.required && subAdminForm.submitted">Please enter first name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Last Name"
+                                [(ngModel)]="subAdmin.lastName" name="subLastName" id="subLastName" #subLastName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subLastName.errors?.required && subAdminForm.submitted">Please enter
+                            last name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="subAdmin.email" id="subEmail" name="subEmail"
+                                #subEmail="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subEmail.errors?.required && subAdminForm.submitted">Please enter
+                            email</span>
+                        <span class="error" *ngIf="subEmail.errors?.email && subAdminForm.submitted">Please enter
+                            valid
+                            email</span>
+                    </div>
+                     
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Domain Name"
+                                [(ngModel)]="subAdmin.domainName" name="subDomainName" id="subDomainName" #subDomainName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-disqus"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subDomainName.errors?.required && subAdminForm.submitted">Please enter
+                            domain name</span>
+                    </div>
+                    
+                    <div class="mb-3" >
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Address"
+                                [(ngModel)]="subAdmin.address" name="subAddress" id="subAddress" #subAddress="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-gps-dot"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subAddress.errors?.required && subAdminForm.submitted">Please enter address</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Website"
+                                [(ngModel)]="subAdmin.website" name="subWebsite" id="subWebsite" #subWebsite="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-globe"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subWebsite.errors?.required && subAdminForm.submitted">Please enter website</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Contact Number"
+                                [(ngModel)]="subAdmin.contactNumber" name="subContactNumber" id="subContactNumber" #subContactNumber="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-phone-end"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="subContactNumber.errors?.required && subAdminForm.submitted">Please enter contact number</span>
+                    </div>   
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> -->
+
+<!-- <div class="modal fade" id="addIssuer" tabindex="-1" role="dialog">
+    <form class="card auth_form" #form="ngForm" (submit)="addIssuer(form)" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">ADD ISSUER</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="First Name" [(ngModel)]="issuer.firstName"
+                                name="firstName" #firstName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="firstName.errors?.required && form.submitted">Please enter first
+                            name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Last Name" [(ngModel)]="issuer.lastName"
+                                name="lastName" #lastName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="lastName.errors?.required && form.submitted">Please enter last name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="issuer.email" name="email" #email="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="email.errors?.required && form.submitted">Please enter email</span>
+                        <span class="error" *ngIf="email.errors?.email && form.submitted">Please enter valid email</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Mobile Number" [(ngModel)]="issuer.mobileNumber"
+                                name="mobileNumber" #mobileNumber="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-phone"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="mobileNumber.errors?.required && form.submitted">Please enter mobile
+                            number</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <textarea type="text" class="form-control" placeholder="Address" [(ngModel)]="issuer.personalAddress"
+                                name="personalAddress" #personalAddress="ngModel" required></textarea>
+                        </div>
+                        <span class="error" *ngIf="personalAddress.errors?.required && form.submitted">Please enter your
+                            address</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Designation" [(ngModel)]="issuer.designation"
+                                name="designation" #designation="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-box"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="designation.errors?.required && form.submitted">Please enter your
+                            designation</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Company/Institution Name" [(ngModel)]="issuer.companyName"
+                                name="companyName" #companyName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-balance"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="companyName.errors?.required && form.submitted">Please enter your
+                            Company/Institution name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <textarea type="text" class="form-control" placeholder="Company Address" [(ngModel)]="issuer.companyAddress"
+                                name="companyAddress" #companyAddress="ngModel" required></textarea>
+                        </div>
+                        <span class="error" *ngIf="companyAddress.errors?.required && form.submitted">Please enter your
+                            Company/Institution address</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Office Mobile No." [(ngModel)]="issuer.officeMobileNumber"
+                                name="officeMobileNumber" #officeMobileNumber="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-box-phone"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="officeMobileNumber.errors?.required && form.submitted">Please enter
+                            your
+                            office mobile number</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> -->
+
+<div class="modal fade" id="approveIssuerModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">Approve Issuer</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to approve this issuer ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="approveIssuer(currentUserId)" class="btn btn-danger waves-effect">Yes</button>
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="toggleAccount" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">{{accountStatus}} Account</h4>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <strong>{{accountStatus}}</strong> {{accountUserName}}'s Account ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="toggleAccountStatus(currentUserId)" class="btn btn-danger waves-effect">Yes</button>
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="bulkRecipientModal" tabindex="-1" role="dialog">
+    <form class="card auth_form" #csvUploadForm="ngForm" (submit)="uploadCsvFile()" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">UPLOAD CSV FILE</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <small><strong>NOTE: CSV file should have these headers:
+                                firstName, lastName, email, personalAddress, mobileNumber</strong></small>
+                    </div>
+                    <div class="mb-3">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Upload csv file</h2>
+                            </div>
+                            <div class="body">
+                                <input type="file" #fileInput class="dropify" [(ngModel)]="csvFile" name="file" #file="ngModel"
+                                    (change)="handleFileInput($event.target.files)" required>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="file.errors?.required && csvUploadForm.submitted">Please upload
+                            file</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Dialogs for Update sub Admin ====== -->
+ <div class="modal fade" id="updateSubadmin" tabindex="-1" role="dialog">
+    <form class="card auth_form" #updatesubAdminForm="ngForm" (submit)="updateSubAdmin(updatesubAdminForm)" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Update SUB-ADMIN</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="First Name"
+                                [(ngModel)]="updatesubAdmin.firstName" name="sfirstName" #sfirstName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="sfirstName.errors?.required && updatesubAdminForm.submitted">Please enter
+                            first
+                            name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Last Name"
+                                [(ngModel)]="updatesubAdmin.lastName" name="slastName" #slastName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-account-circle"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="slastName.errors?.required && updatesubAdminForm.submitted">Please enter
+                            last name</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email" [(ngModel)]="updatesubAdmin.email" name="semail"
+                                #semail="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-email"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="semail.errors?.required && updatesubAdminForm.submitted">Please enter
+                            email</span>
+                        <span class="error" *ngIf="semail.errors?.email && updatesubAdminForm.submitted">Please enter
+                            valid
+                            email</span>
+                    </div>
+                     <!-- <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Mongodb connection url"
+                                [(ngModel)]="updatesubAdmin.mongodbConnectionUrl" name="mongodbConnectionUrl" #mongodbConnectionUrl="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-link"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="mongodbConnectionUrl.errors?.required && updatesubAdminForm.submitted">Please enter
+                            Mongodb Connection Url</span>
+                    </div> -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Domain name"
+                                [(ngModel)]="updatesubAdmin.domainName" name="domainName" #domainName="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-disqus"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="domainName.errors?.required && updatesubAdminForm.submitted">Please enter
+                            domain name</span>
+                    </div>
+                    <!-- <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Logo URL"
+                                [(ngModel)]="updatesubAdmin.logo" name="logo" #logo="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-link"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="logo.errors?.required && updatesubAdminForm.submitted">Please enter
+                            logo url</span>
+                    </div> -->
+
+                    <!-- <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Favicon URL"
+                                [(ngModel)]="updatesubAdmin.favicon" name="favicon" #favicon="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-link"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="favicon.errors?.required && updatesubAdminForm.submitted">Please enter
+                            favicon url</span>
+                    </div> -->
+                    <!-- <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="login page logo URL"
+                                [(ngModel)]="updatesubAdmin.loginPageLogo" name="loginPageLogo" #loginPageLogo="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-link"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="loginPageLogo.errors?.required && updatesubAdminForm.submitted">Please enter
+                            login page logo Url</span>
+                    </div> -->
+                    <!-- <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="home page leaflet text"
+                                [(ngModel)]="updatesubAdmin.homePageLeafletText" name="homePageLeafletText" #homePageLeafletText="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-collection-text"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="homePageLeafletText.errors?.required && updatesubAdminForm.submitted">Please enter
+                            home page leaflet text</span>
+                    </div>
+                    <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Coin name on wallet"
+                                [(ngModel)]="updatesubAdmin.coinNameOnWallet" name="coinNameOnWallet" #coinNameOnWallet="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-balance-wallet"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="coinNameOnWallet.errors?.required && updatesubAdminForm.submitted">Please enter
+                            coin name on wallet</span>
+                    </div>
+                    <div class="mb-3" hidden>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Name of the account"
+                                [(ngModel)]="updatesubAdmin.nameOfTheAccount" name="nameOfTheAccount" #nameOfTheAccount="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-assignment-account"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="nameOfTheAccount.errors?.required && updatesubAdminForm.submitted">Please enter
+                            name of the account</span>
+                    </div> -->
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Address"
+                                [(ngModel)]="updatesubAdmin.address" name="address" #address="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-gps-dot"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="address.errors?.required && updatesubAdminForm.submitted">Please enter address</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Website"
+                                [(ngModel)]="updatesubAdmin.website" name="website" #website="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-globe"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="website.errors?.required && updatesubAdminForm.submitted">Please enter website</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Contact number"
+                                [(ngModel)]="updatesubAdmin.contactNumber" name="contactNumber" #contactNumber="ngModel" required>
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="zmdi zmdi-phone-end"></i></span>
+                            </div>
+                        </div>
+                        <span class="error" *ngIf="contactNumber.errors?.required && updatesubAdminForm.submitted">Please enter contact number</span>
+                    </div>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<!-- Modal Dialogs for update API Config ====== -->
+<div class="modal fade" id="APIConfigModal" tabindex="-1" role="dialog">
+    <form class="card auth_form" #f="ngForm" (submit)="updateAPIConfig(f)" [formGroup]="apiConfigForm" novalidate>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">API Config</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="frm-class">
+                        <label class="label label-danger" style="color: red">Note: This api will be run at 22:00</label>
+                    </div>
+
+                    <div class="frm-class">
+                        <label for="apiConfigUrl">URL</label>
+                        <input type="url" id="apiConfigUrl" class="form-control"
+                        name="apiConfigUrl" #apiConfigUrl formControlName="apiConfigUrl" [(ngModel)]="apiConfigDetails.apiUrl">
+                        <div class="required" *ngIf="apiConfigForm.get('apiConfigUrl').errors?.required && apiConfigForm.get('apiConfigUrl').touched"> Enter Url</div>
+                        <div class="required" *ngIf="apiConfigForm.get('apiConfigUrl').errors?.pattern && apiConfigForm.get('apiConfigUrl').touched">Please Enter valid Url</div>
+                    </div>
+
+                    <div class="frm-class">
+                        <label for="scheduleType">Schedule Call</label>
+                        <select class="form-control" id="scheduleType" name="scheduleType" formControlName="scheduleType" #scheduleType [(ngModel)]="apiConfigDetails.scheduleType">
+                            <option value="">Select Schedule Call</option>
+                            <option value="DAILY">DAILY</option>
+                            <option value="WEEKLY">WEEKLY</option>
+                            <option value="MONTHLY">MONTHLY</option>
+                        </select>
+                        <div class="required" *ngIf="!apiConfigForm.get('scheduleType').valid && apiConfigForm.get('scheduleType').touched">Please Enter Time</div> 
+                    </div>
+
+                    <!-- <div class="frm-class">
+                        <label for="scheduleTime">Time</label>
+                        <input type="text" id="scheduleTime" class="form-control" name="scheduleTime" formControlName="scheduleTime" #scheduleTime [(ngModel)]="apiConfigDetails.scheduleTime">
+                        <div class="required" *ngIf="apiConfigForm.get('scheduleTime').errors?.required">Please Enter Time</div> 
+                    </div> -->
+
+                    <div class="frm-class">
+                        <label for="headerValue">Authorization Token</label>
+                        <textarea class="form-control" id="headerValue" name="headerValue" formControlName="headerValue" #headerValue [(ngModel)]="apiConfigDetails.headerValue"></textarea>
+                        <div class="required" *ngIf="!apiConfigForm.get('headerValue').valid && apiConfigForm.get('headerValue').touched">Please Enter Authorization Token</div> 
+                    </div>
+
+                    <div class="frm-class">
+                        <div class="checkbox">
+                            <input id="is_enabled" type="checkbox" name="isEnabled" formControlName="isEnabled" #isEnabled [(ngModel)]="apiConfigDetails.isEnabled" (click)="toggleforAPIConfig($event)">
+                            <label for="is_enabled">Is Enabled</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit"  class="btn btn-danger waves-effect">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

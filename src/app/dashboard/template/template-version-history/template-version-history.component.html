@@ -1,0 +1,143 @@
+<section class="content file_manager">
+  <div class="body_scroll">
+     <div class="block-header">
+        <div class="row">
+           <div class="col-lg-7 col-md-6 col-sm-12">
+              <h2>Templates</h2>
+              <ul class="breadcrumb">
+                 
+                 <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                 <li class="breadcrumb-item"><a routerLink="/dashboard/template">Template</a></li>
+                 <li class="breadcrumb-item active">Templates Version History</li>
+              </ul>
+              <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+           </div> 
+
+        </div>
+     </div>
+     <div class="container-fluid">
+      <div class="row clearfix">
+         <div class="col-sm-12 text-right mb-2">
+            <span *ngIf="(currentUserRole=='ROLE_SUB_ACCOUNT_ADMIN' && parentTemplateDetail?.subAccountID!=null) || (currentUserRole == 'ROLE_ACCOUNT_ADMIN')">
+               <button title="Update Template Version" class="btn btn-success float-right add-cources-btn" type="button" routerLink="/dashboard/template/update-version/{{ parentId }}">Update Template Version</button>
+            </span>
+          </div>  
+         <div class="col-lg-12">
+            <div class="card">
+
+               <!-- Parent Template Detail Start -->
+               
+               <div class="row update-template">
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>Template Name</label>
+                        <p> {{ parentTemplateDetail?.name }} </p>
+                     </div>
+                  </div>
+               
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>Template Description</label>
+                        <p> {{ parentTemplateDetail?.description }} </p>
+                     </div>
+                  </div>
+               
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>Document Type</label>
+                        <p> {{ parentTemplateDetail?.certificateType }} </p>
+                     </div>
+                  </div>
+               
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>Language</label>
+                        <p> {{ parentTemplateDetail?.language }} </p>
+                     </div>
+                  </div>
+               
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>Start Date</label>
+                        <p> {{ parentTemplateDetail?.startDate | date:'dd MMMM yyyy' }} </p>
+                     </div>
+                  </div>
+               
+                  <div class="col-sm-4 box">
+                     <div class="innerbox">
+                        <label>End Date</label>
+                        <p> {{ parentTemplateDetail?.endDate | date:'dd MMMM yyyy' }} </p>
+                     </div>
+                  </div>
+               </div>
+               <!-- Parent Template Detail End -->
+
+               <div class="tab-content">
+                  <div class="tab-pane active" id="doc">
+                     <div class="row clearfix" *ngIf="templateList.length > 0">
+                        <div class="col-lg-3 col-md-4 col-sm-12" *ngFor="let template of templateList;let i=index">
+                           <div class="card card-new">
+                              <div class="file">
+                                 <a href="javascript:void(0);">
+                                    <div class="hover z-index-5">
+                                       <span *ngIf="(currentUserRole=='ROLE_SUB_ACCOUNT_ADMIN' && template.subAccountID!=null) || (currentUserRole == 'ROLE_ACCOUNT_ADMIN')">
+                                          <button type="button" class="btn btn-icon btn-icon-mini btn-round btn-danger"
+                                             (click)="openDeleteTemplateModal(template._id)"  title="Delete Template">
+                                          <i class="zmdi zmdi-delete"></i>
+                                          </button>
+                                       </span>
+                                    </div>
+                                    <div class="icon" (click)="viewTemplate(template.previewPdf)">
+                                       <i class="zmdi zmdi-file-text"></i>
+                                    </div>
+                                    <div class="file-name" (click)="viewTemplate(template.previewPdf)">
+                                       <p class="m-b-5 text-muted p-text">
+                                          <!-- {{i+1+".docx"}} -->{{ template.name || '' }} ({{ template.certificateType || '' }} | {{ template.language || '' }})</p>
+                                       <small>  <span class="title-course">Start Date - {{ template.startDate | date:'dd MMM yy'}}, End Date - {{template.endDate | date:'dd MMM yy'}}</span> </small>
+                                       
+                                       <!-- <span class="date text-muted"><span>{{template.date
+                                       |date:'dd'}}</span> {{template.date
+                                       |date:'MMM yy'}}</span> -->
+                                       <span class="date text-muted">
+                                          v{{ template.version }}
+                                       </span>
+                                    </div>
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row clearfix" *ngIf="templateList.length == 0">
+                        <div class="col-sm-12 text-center">
+                           <div class="card">
+                              No Template exists
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+  </div>
+</section>
+
+<div class="modal fade" id="openDeleteTemplateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h4 class="title" id="defaultModalLabel">Delete Template</h4>
+        </div>
+        <div class="modal-body">
+           Are you sure you want to delete this template ?
+        </div>
+        <div class="modal-footer">
+           <button type="button" (click)="deleteTemplate()" class="btn btn-danger waves-effect">Yes</button>
+           <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">No</button>
+        </div>
+     </div>
+  </div>
+</div>
+
+

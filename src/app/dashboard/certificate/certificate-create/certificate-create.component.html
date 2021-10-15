@@ -1,0 +1,267 @@
+<section class="content">
+   <div class="body_scroll">
+      <div class="block-header">
+         <div class="row">
+            <div class="col-lg-7 col-md-6 col-sm-12">
+               <h2>Certificate Create</h2>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                  <li class="breadcrumb-item active">Create Certificate</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+      <div class="container-fluid">
+         <div>
+            <div class="card">
+               <div class="body">
+                  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                     <mat-step>
+                        <ng-template matStepLabel>Select Template</ng-template>
+                        <!-- <div class="mb-3">
+                             <div class="input-group">
+                                
+                                <select class="form-control" [(ngModel)]="selectedCourse" id="courses">
+                                    <option value="">Select Course Name</option>
+                                    <option *ngFor="let course of coursesList;let i = index" value="{{ course._id }}"> {{ course.courseName }} </option>
+                                </select>
+                             </div>
+                          </div> -->
+                        <!-- <div class="mb-3">
+                              <div class="input-group">
+                                 <select class="form-control" [(ngModel)]="selectedSignature" id="signatories">
+                                    <option value="">Select Signatory</option>
+                                    <option *ngFor="let signatory of signatoryList;let i = index" value="{{ signatory._id }}"> {{ signatory.signatoryName }} </option>
+                                 </select>
+                              </div>
+                           </div> -->
+                        <!-- <div class="mb-3" id="certificateDate">
+                              <div class="input-group">
+                                 <input type="text" id="certDate" class="form-control"
+                                    placeholder="Certification date" required>
+                                 <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-calendar"></i></span>
+                                 </div>
+                              </div>
+                           </div> -->
+         
+                        <div class="mb-3 " id="certificateDate">
+         
+         
+                           <div class="input-group datepicker-clss">
+                              <input matInput [(ngModel)]="certificateDate" [matDatepicker]="picker"
+                                 placeholder="Certification date" (dateChange)="changeCertificateDate('change', $event)"
+                                 id="certDate" readonly (click)="picker.open()">
+                              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                              <mat-datepicker #picker></mat-datepicker>
+                           </div>
+         
+         
+                        </div>
+
+         
+                        <div class="card">
+                           <div class="">
+                              <div class="table-responsive">
+                                 <table class="table">
+                                    <thead>
+                                       <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">Template Name</th>
+                                          <th>Action</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngFor="let template of templateList;let i=index">
+                                          <td>
+                                             <input type="checkbox" name="selectedTemp" [(ngModel)]="selectedTemplate[i]"
+                                                value="{{template._id}}"></td>
+                                          <td>{{ template.name || 'NA' }} ({{ template.certificateType || 'NA' }} | {{ template.language || 'NA' }} | Version {{ template.version || 'NA' }})</td>
+                                          <td><a href="{{ template.previewUrl || '#' }}" target="_blank"> View Preview </a></td>
+                                       </tr>
+                                       <tr *ngIf="templateList.length==0">
+                                          <td colspan="3">No Record Found</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+         
+                        </div>
+                        <iframe hidden id="previewTemplate" class="mb-3" frameborder="0" style="display: none;"></iframe>
+                        <div class="text-right">
+                           <button *ngIf="selectedTemplate" mat-button matStepperNext class="btn btn-primary">Next <i
+                                 class="zmdi zmdi-arrow-right"></i></button>
+                        </div>
+                     </mat-step>
+                     <mat-step>
+                        <ng-template matStepLabel>Enter Recipient Details</ng-template>
+                        <div class="" id="receipientList">
+                           <form [formGroup]="filterRecipientDetailsFrm">
+                              <div class="row">
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <ng-multiselect-dropdown-angular7 [placeholder]="'Select Course'"
+                                       [data]="courseDropDownList" formControlName="filterCourses" [settings]="courceDropDownSettings"
+                                       (onSelect)="onCourseSelect($event)" (onDeSelect)="onCourseDeSelect($event)" >
+                                    </ng-multiselect-dropdown-angular7>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group">
+                                       <div class="input-group datepicker-clss">
+                                          <input matInput formControlName="filterConvoDate" [matDatepickerFilter]="convoDateFilter"
+                                             [matDatepicker]="convoDatePicker" placeholder="Convo Date" id="convoDate" readonly
+                                             (dateChange)="changeConvocationDate('change', $event)" (click)="convoDatePicker.open()">
+                                          <mat-datepicker-toggle matSuffix [for]="convoDatePicker"></mat-datepicker-toggle>
+                                          <mat-datepicker #convoDatePicker></mat-datepicker>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+         
+                              <div class="row">
+                                 <div class="col-md-3">
+                                    <input class="form-control" type="text" formControlName="filterFirstName" (keyup)="filterRecords()" [(ngModel)]="searchTerm['firstName']" 
+                                       autocomplete="off" placeholder="First Name">
+                                 </div>
+                                 <div class="col-md-3">
+                                    <input class="form-control" type="text" formControlName="filterLastName" (keyup)="filterRecords()" [(ngModel)]="searchTerm['lastName']"
+                                       autocomplete="off" placeholder="Last Name">
+                                 </div>
+                                 <div class="col-md-3">
+                                    <input class="form-control" type="text" formControlName="filterEmail" (keyup)="filterRecords()" name="email" [(ngModel)]="searchTerm['email']"
+                                       autocomplete="off" placeholder="Email">
+                                 </div>
+                                 <div class="col-md-3">
+                                    <input class="form-control" type="text" formControlName="filterMobileNumber" (keyup)="filterRecords()" name="mobileNumber" [(ngModel)]="searchTerm['mobileNumber']"
+                                       autocomplete="off" placeholder="Mobile Number">
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+         
+                        
+                        <div class="or-splitter"> --- </div>
+         
+                        <div>Records Found: {{ selectedRecipients.length }}</div>
+                        <div class="text-right mb-2">
+                           <button mat-button matStepperPrevious class="btn btn-secondary"><i class="zmdi zmdi-arrow-left"></i>
+                              Back</button>
+                           <button *ngIf="selectedRecipients.length > 0" mat-button matStepperNext class="btn btn-primary">Next
+                              <i class="zmdi zmdi-arrow-right"></i></button>
+                        </div>
+         
+                        <div class="card">
+                           <div class="">
+                              <div class="table-responsive" style="height: 400px">
+                                 <table class="table table-hover">
+                                    <thead>
+                                       <tr>
+                                          <th>#</th>
+                                          <th>Recipient Name</th>
+                                          <th>Mobile Number</th>
+                                          <th>Recipient Email</th>
+                                          <th>Action</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody id="selectedRecipient">
+                                       <tr *ngFor="let recipient of selectedRecipients;let i=index">
+                                          <td>{{ i+1 }}</td>
+                                          <td>{{ recipient.name }}</td>
+                                          <td>{{ recipient.mobileNumber }}</td>
+                                          <td>{{ recipient.email }}</td>
+                                          <td class="actiontd">
+                                             <span
+                                                (click)="removeSelectedReceipt(i)"><i class="zmdi zmdi-delete"></i></span>
+                                          </td>
+                                       </tr>
+                                       <tr *ngIf="selectedRecipients.length==0">
+                                          <td colspan="5"> No Record Found</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+
+                           </div>
+                        </div>
+                        <div class="text-right mb-2">
+                           <button mat-button matStepperPrevious class="btn btn-secondary"><i class="zmdi zmdi-arrow-left"></i>
+                              Back</button>
+                           <button *ngIf="selectedRecipients.length > 0" mat-button matStepperNext class="btn btn-primary">Next
+                              <i class="zmdi zmdi-arrow-right"></i></button>
+                        </div>
+                     </mat-step>
+                     <mat-step>
+                        <ng-template matStepLabel>Preview</ng-template>
+         
+                        <div>Records Found: {{ selectedRecipients.length }}</div>
+                        <div class="text-right mb-2">
+                           <button mat-button matStepperPrevious class="btn btn-secondary"><i class="zmdi zmdi-arrow-left"></i>
+                              Back</button>
+                           <button *ngIf="selectedRecipients.length > 0" mat-button matStepperNext class="btn btn-primary">Next
+                              <i class="zmdi zmdi-arrow-right"></i></button>
+                        </div>
+         
+                        <div class="card">
+                           <div class="">
+                              <div class="table-responsive" style="height: 400px">
+                                 <table class="table table-hover">
+                                    <thead>
+                                       <tr>
+                                          <th>#</th>
+                                          <th>Recipient Name</th>
+                                          <th>Mobile Number</th>
+                                          <th>Recipient Email</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody id="selectedRecipient">
+                                       <tr *ngFor="let recipient of selectedRecipients;let i=index">
+                                          <td>{{ i+1 }}</td>
+                                          <td>{{ recipient.name }}</td>
+                                          <td>{{ recipient.mobileNumber }}</td>
+                                          <td>{{ recipient.email }}</td>
+                                       </tr>
+                                       <tr *ngIf="selectedRecipients.length==0">
+                                          <td colspan="4"> No Record Found</td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="text-right mb-2">
+                           <button mat-button matStepperPrevious class="btn btn-secondary"><i class="zmdi zmdi-arrow-left"></i>
+                              Back</button>
+                           <button mat-button matStepperNext class="btn btn-primary"> Next <i
+                                 class="zmdi zmdi-arrow-right"></i></button>
+                        </div>
+                     </mat-step>
+                     <mat-step>
+                        <form [formGroup]="privateKeyUploadFrm">
+                           <ng-template matStepLabel>Confirmation</ng-template>
+                           <h3>Please enter your private key to sign and generate certificate</h3>
+                           <div class="mb-3 w-100">
+                              <div class="input-group">
+                                 <input type="file" class="form-control" #privateKeyFile placeholder="Upload Private Key File" name="privateKeyFile"
+                                    formControlName="privateKeyFile" (change)="privateKeyFileUploaded($event)">
+                                 <div class="input-group-append">
+                                    <span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="text-right mb-2">
+                              <button mat-button matStepperPrevious class="btn btn-secondary"><i class="zmdi zmdi-arrow-left"></i>
+                                 Back</button>
+                              <button mat-button (click)="finishSteps()" class="btn btn-primary"> Finish</button>
+                              <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
+                           </div>
+                        </form>   
+                     </mat-step>
+                  </mat-horizontal-stepper>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>

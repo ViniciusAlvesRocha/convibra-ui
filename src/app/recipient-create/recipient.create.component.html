@@ -1,0 +1,47 @@
+<div class="authentication">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 col-sm-12">
+				<form class="card auth_form" [formGroup]="recipientForm" (submit)="createRecipient()">
+					<div class="header">
+						<img class="logo" src="assets/images/hdc.png" alt="">
+						<h5>Create Password</h5>
+						<span>Enter your new login password to create recipient account</span>
+					</div>
+					<div class="body">
+						<div class="mb-3">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Password" formControlName="newPassword" name="newPassword" required>
+								<div class="input-group-append">
+									<span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+								</div>
+							</div>
+							<span class="error" *ngIf="recipientForm.get('newPassword').hasError('required') && recipientForm.touched">Please enter password</span>
+							<span class="error" *ngIf="recipientForm.get('newPassword').hasError('email') && recipientForm.touched">Password must have minimum 6 words, one
+								special character and number</span>
+						</div>
+						<div class="mb-3">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Confirm Password"
+								 formControlName="confirmPassword" name="confirmPassword">
+								<div class="input-group-append">
+									<span class="input-group-text"><i class="zmdi zmdi-lock"></i></span>
+								</div>
+							</div>
+							<span class="error" *ngIf="recipientForm.get('confirmPassword').hasError('required') && recipientForm.touched">Please enter confirm password</span>
+							<span class="error" *ngIf="recipientForm.get('confirmPassword').hasError('email') && recipientForm.touched">Confirm password must have minimum
+								6 words, one special character and number</span>
+							<span class="error" *ngIf="recipientForm.get('confirmPassword').hasError('mustMatch')">Password
+								and confirm password does not match</span>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block waves-effect waves-light">SUBMIT</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-lg-8 col-sm-12">
+				<div class="card">
+					<img src="assets/images/signin.svg" alt="Forgot Password" />
+				</div>
+			</div>
+		</div>
+	</div>

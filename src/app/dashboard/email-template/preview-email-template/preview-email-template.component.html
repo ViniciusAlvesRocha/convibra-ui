@@ -1,0 +1,67 @@
+<section class="content">
+	<div class="body_scroll">
+		<div class="block-header">
+			<div class="row">
+				<div class="col-lg-7 col-md-6 col-sm-12">
+					<h2>Email Template</h2>
+					<ul class="breadcrumb">
+						
+						<li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+						<li class="breadcrumb-item"><a routerLink="/dashboard/email-template/">Email Template</a>
+						</li>
+						<li class="breadcrumb-item active">Preview Email Template</li>
+					</ul>
+					<button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+							class="zmdi zmdi-sort-amount-desc"></i></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<!-- Vertical Layout -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="card">
+						<div class="header">
+							<h1>Preview Email Template</h1>
+						</div>
+						<div class="body">
+							<div class="row">
+								<div class="col-sm-12 col-md-3 col-lg-3">
+									<div class="form-group">
+										<label>Template Name:</label>
+										<span>{{ emailTemplateDetails?.templateName }}</span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-3 col-lg-3">
+									<div class="form-group">
+										<label>Template Subject:</label>
+										<span>{{ emailTemplateDetails?.templateSubject }}</span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-3 col-lg-3">
+									<div class="form-group">
+										<label>Template From:</label>
+										<span>{{ emailTemplateDetails?.templateFrom }}</span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-3 col-lg-3">
+									<div class="form-group">
+										<label>Template From Email:</label>
+										<span>{{ emailTemplateDetails?.templateFromEmail }}</span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-12 col-lg-12">
+									<div class="form-group">
+										<label>Template Html:</label>
+										<span #templateHtmlDiv></span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

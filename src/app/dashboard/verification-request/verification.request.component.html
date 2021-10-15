@@ -1,0 +1,167 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Verification Request</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item active">Verification Request</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- ISSUER DATA TABLE START -->
+        <div *ngIf="role=='ROLE_ISSUER'" class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Request Id</th>
+                                            <th>Requester</th>
+                                            <th>Request Date</th>
+                                            <th>Issued To</th>
+                                            <th>Course</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let request of requests;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{request._id}}</td>
+                                            <td>{{request.verifierId.firstName +" "+request.verifierId.lastName}}</td>
+                                            <td>{{request.date | date:'dd MMM yy hh:mm a'}}</td>
+                                            <td>{{request.certificateId.rawCertificate.issuer.name}}</td>
+                                            <td>{{request.certificateId.course.Lang1}}</td>
+                                            <td><span (click)="viewCertificate(request.certificateId._id)"><i title="View Certificate"
+                                                        class="zmdi zmdi-eye"></i></span>
+                                                <span (click)="viewMessage(request.requestMessage)"><i title="View Message"
+                                                        class="zmdi zmdi-email-open"></i></span>
+                                                <span (click)="revert(request._id)"><i title="Send Message" class="zmdi zmdi-mail-send"></i></span>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="requests?.length == 0" >
+                                            <td colspan="7" align="center"> Record Not Exist</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows -->
+            <div [hidden]="requests?.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage"
+                    [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+        <!-- ISSUER DATA TABLE END -->
+
+        <!-- VERFIER DATA TABLE START-->
+        <div *ngIf="role=='ROLE_VERIFIER'" class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="float-right mb-10">
+                                <a class="btn btn-primary" routerLink="/dashboard/verification/qr-scan">Scan QR-Code</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Request Id</th>
+                                            <th>Request Message</th>
+                                            <th>Response Message</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let request of requests;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{request._id}}</td>
+                                            <td>{{request.requestMessage}}</td>
+                                            <td>{{request.responseMessage}}</td>
+                                            <td><span (click)="viewCertificate(request.certificateId._id)"><i title="View Certificate"
+                                                        class="zmdi zmdi-eye"></i></span>
+                                                <span (click)="viewMessage(request.requestMessage)"><i title="View Message"
+                                                        class="zmdi zmdi-email-open"></i></span>
+                                                <span (click)="revert(request._id)"><i title="Send Message" class="zmdi zmdi-mail-send"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows -->
+            <div [hidden]="requests.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage"
+                    [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+        <!-- VERFIER DATA TABLE END -->
+    </div>
+</section>
+
+
+<div class="modal fade" id="sendMessage" tabindex="-1" role="dialog">
+    <form action="" #form="ngForm" (submit)="sendMessage(form)">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Reply Verifier</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <textarea type="text" class="form-control txtmsg" placeholder="Enter message for verification requester"
+                                [(ngModel)]="responseMessage" #txtMsg="ngModel" name="txtMsg" required></textarea>
+                        </div>
+                        <span class="error" *ngIf="txtMsg.errors?.required && form.submitted">Please enter message</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">Send</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="viewMessage" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="title" id="defaultModalLabel">View Message</h4>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <textarea type="text" class="form-control txtmsg" [ngModel]="currentMessage" disabled></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+<section class="content block_summary_page {{ isPublic ? 'public-full-content' : '' }}">
+
+  <app-public-header *ngIf="isPublic"></app-public-header>
+  <div class="body_scroll">
+    <div class="block-header">
+      <div class="row">
+        <div class="col-sm-12 top-breadcrumb">
+          <h2>Block Summary <small>#{{blockDetails.hashOrNumber}}</small></h2>
+
+          <ul class="breadcrumb">
+            <!-- <li class="breadcrumb-item" ><a routerLink="/"><i class="zmdi zmdi-home"></i> Dashboard</a></li> -->
+            <li class="breadcrumb-item"><a routerLink="{{ baseRoute }}">Block Explorer</a></li>
+            <li class="breadcrumb-item active">Block Summary</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-sm-12">
+          <div class="card mb-0">
+            <div class="below_bradcrumb_ttl mb-3 text-right">
+
+              <a class="btn btn-default" routerLink="{{ baseRoute }}">Back</a>
+            </div>
+            <div class="body">
+              <div class="card">
+                <div class="label label-info text-center" *ngIf="blockDetails.error != false">
+                  <h2>{{ blockDetails.error }}</h2>
+                </div>
+
+                <div class="label label-info text-center" *ngIf="blockDetails.loaded == false">
+                  <h2>Loading...</h2>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-hover" *ngIf="blockDetails.error == false && blockDetails.loaded == true">
+                    <tbody>
+                      <tr>
+                        <td>Hash</td>
+                        <td>{{ blockDetails?.details?.hash }}</td>
+                      </tr>
+                      <tr>
+                        <td>Parent Hash</td>
+                        <td><a
+                            routerLink="{{ baseRoute }}block/{{ blockDetails?.details?.parentHash }}">{{ blockDetails?.details?.parentHash }}</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Timestamp</td>
+                        <td>{{ blockDetails?.details?.timestampFormatted }}</td>
+                      </tr>
+                      <tr>
+                        <td>Diffculty</td>
+                        <td>{{ blockDetails?.details?.difficulty }}</td>
+                      </tr>
+                      <tr>
+                        <td>Gas Limit</td>
+                        <td>{{ blockDetails?.details?.gasLimitFormatted }}</td>
+                      </tr>
+                      <tr>
+                        <td>Gas Used</td>
+                        <td>{{ blockDetails?.details?.gasUsedFormatted }}</td>
+                      </tr>
+                      <tr>
+                        <td>Miner</td>
+                        <td>{{ blockDetails?.details?.miner }}</td>
+                      </tr>
+                      <tr>
+                        <td>Extra Data</td>
+                        <td>{{ blockDetails?.details?.extraData }}</td>
+                      </tr>
+                      <tr>
+                        <td>Transaction(s)</td>
+                        <td>{{ blockDetails?.details?.transactions?.length }}</td>
+                      </tr>
+                      <tr>
+                        <td>Confirmation(s)</td>
+                        <td>{{ blockDetails?.details?.confirmation }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <section class="transaction_accordian mt-3" *ngIf="blockDetails?.details?.transactions?.length > 0">
+                  <h5>Transaction(s)</h5>
+                  <div *ngFor="let _transaction of blockDetails?.details?.transactions" class="panel-group mb-2"
+                    id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                          <a role="button" data-toggle="collapse" data-parent="#accordion"
+                            href="#collapse{{ _transaction.hash }}" aria-expanded="true" aria-controls="collapseOne">
+                            #{{ _transaction.hash }}
+                          </a>
+                        </h4>
+                      </div>
+                      <div id="collapse{{_transaction.hash}}" class="panel-collapse collapse in" role="tabpanel"
+                        aria-labelledby="headingOne">
+                        <div class="panel-body">
+                          <div class="table-responsive">
+                            <table class="table table-striped">
+                              <tbody>
+                                <tr>
+                                  <td>From</td>
+                                  <td>{{ _transaction?.from }}</td>
+                                </tr>
+                                <tr>
+                                  <td>To</td>
+                                  <td>{{ _transaction?.to }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Gas Price</td>
+                                  <td>{{ _transaction?.gasPriceFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Nonce</td>
+                                  <td>{{ _transaction?.nonce }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Value</td>
+                                  <td>{{ _transaction?.valueFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Data</td>
+                                  <td><code>{{ _transaction?.data }}</code></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

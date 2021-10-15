@@ -1,0 +1,16 @@
+.onerowaddminus .box {max-width:15%;}
+.onerowaddminus .box .form-group {margin-bottom:0px; width:100%;}
+.onerowaddminus .box:last-child {display:flex; align-items:center; min-width:25%;} 
+.onerowaddminus .box .addbtn {margin: 31px 0px 0px 10px;}
+.checkbox {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    padding-left: 33px;
+    line-height: 27px;
+}
+.form-control {height:auto;}
+.form-control:focus {box-shadow:none;}
+.inline-img-style {width: 20%;}
+
+

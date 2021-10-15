@@ -1,0 +1,17 @@
+td i{
+    margin: 0px 6px;
+}
+
+.txtmsg{
+    min-height:150px;
+}
+.table td, .table th{
+    font-size: 12px;padding: 5px;
+}
+.card .body{
+    padding: 10px 20px;
+}
+.badge {
+    padding: 5px 10px !important;
+    font-size: 10px !important;
+}

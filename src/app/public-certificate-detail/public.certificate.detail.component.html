@@ -1,0 +1,208 @@
+<div class="container elevate" *ngIf="certificateInfo?.isClaimed">
+    <div class="navbar-brand">
+            <img src="{{ instanceSettingObj?.logo }}" alt="{{ instanceSettingObj?.orgName }}">
+    </div>
+
+    <div class="vertical-tab-row mt-3">
+        <mat-tab-group (selectedTabChange)="onTabChanged($event);">
+            <mat-tab label="CERTIFICATE INFORMATION">
+                <div class="card">
+                    <div class="header">
+                        <h2>CERTIFICATE INFORMATION</h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Course</th>
+                                        <td style="word-break: break-all;">{{certificateInfo?.course?.Lang1 || ''}} / <br/>{{ certificateInfo?.course.Lang2 || ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Issued To</th>
+                                        <td>{{certificateInfo?.issuedTo?.name || ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Issued On</th>
+                                        <td>{{certificateInfo?.rawCertificate?.issuedOn }}</td>
+                                    </tr>
+                                    
+                                    
+                                    <tr>
+                                        <th scope="row">Issure</th>
+                                        <td>{{certificateInfo?.rawCertificate?.issuer?.name || ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Serial No</th>
+                                        <td>{{ certificateInfo?.rawCertificate?.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Result</th>
+                                        <td>{{certificateInfo?.extraData?.result || ''}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Institution</th>
+                                        <td>{{instanceSettingData?.organizationName || ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Issuer Address</th>
+                                        <td style="word-break: break-all;">{{certificateInfo?.issuedBy?.address}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Certificate Hash</th>
+                                        <td style="word-break: break-all;">{{certificateInfo?.signedCertificate?.signature?.targetHash || ''}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Certificate Issuance Tx Hash</th>
+                                        <td style="word-break: break-all;"><a target="_blank" routerLink="/public/block-explorer/tx/{{certificateInfo?.issuanceTxHash}}">{{certificateInfo?.issuanceTxHash || ''}}</a></td>
+                                    </tr>
+
+                                    <tr *ngIf="certificateInfo?.revocationDetails?.txHash !=null">
+                                        <th scope="row">Certificate Revocation Tx Hash </th>
+                                        <td style="word-break: break-all;"><a target="_blank" routerLink="/public/block-explorer/tx/{{certificateInfo?.revocationDetails?.txHash}}">{{certificateInfo?.revocationDetails?.txHash || ''}}</a></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Certificate Claimed</th>
+                                        <td>
+                                            <span *ngIf="certificateInfo?.isClaimed == false" class="badge badge-danger">NO</span>
+                                            <span *ngIf="certificateInfo?.isClaimed == true" class="badge badge-success">YES</span>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th scope="row">Certificate Revoked</th>
+                                        <td>
+                                            <span *ngIf="certificateInfo?.isRevoked == false" class="badge badge-danger">NO</span>
+                                            <span *ngIf="certificateInfo?.isRevoked == true" class="badge badge-success">YES</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="CERTIFICATE HOLDER INFORMATION">
+                <div class="card">
+                    <div class="header">
+                        <h2>CERTIFICATE HOLDER INFORMATION</h2>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr *ngFor="let data of extraData">
+                                        <th scope="row">{{ toTitleCase(data.key)}}</th>
+                                        <td style="word-break: break-all;">{{ data.value || ''}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="CERTIFICATE QR CODE">
+                <div class="card">
+                    <div class="header">
+                        <h2>CERTIFICATE QR CODE</h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-sm-5 qrcodecenter">
+                                <div *ngIf="qrCertificateData">
+                                    <qrcode [qrdata]="qrCertificateData"
+                                        [size]="256" [level]="'M'"></qrcode>
+                                </div>  
+                            </div>              
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="CERTIFICATE PDF">
+                <div class="card">
+                    <div class="header">
+                        <h2>CERTIFICATE PDF</h2>
+                    </div>
+                    <div class="body">
+                        <div class="right">
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-sm-12 certificate_info_right_btn_div mb-2">
+                                    <div class="dflex_left">
+                                        <select [(ngModel)]="activeCertificate" (change)="switchCertificate()" id="loadedCertificate">
+                                            <option value=""> Select Certificate</option>
+                                                <option *ngFor="let data of generatedFile; index as i" value="{{ data.file }}" selected>Certificate {{ i+1 }}</option>
+                                            </select>
+                                    </div>
+                                    <div class="dflex_right">
+                                        <button *ngIf="!hideVerifyBtn" class="btn btn-primary" (click)="verifyWithInstitution()">Verify with Institution</button>
+                                        <a href="/" *ngIf="hideVerifyBtn" class="btn btn-info" title="Login as a verifier to send verification request" target="_blank">Login to Verify</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <iframe id="previewIframe" height="86%" width="100%"
+                                        frameborder="0"></iframe>
+                        </div>                
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="CERTIFICATE LOCATION">
+                <div class="card">
+                    <div class="header">
+                        <h2>CERTIFICATE LOCATION</h2>
+                    </div>
+                    <div class="body">
+                        <div id="map" class="gmap"></div>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>    
+    </div>
+      
+</div>
+
+<div class="loading_div">
+    <span *ngIf="!certificateInfo?.isClaimed">
+        <div class="container elevate">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="not-error-mesg">
+                        <!-- Certificate information can only be viewed once it is claimed by recipient. -->
+                        Certificate details is loading....   Please wait.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </span>
+</div>
+
+
+<div class="modal fade" id="openVerificationRequestModal" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog large-mdl-temp" role="document">
+       <div class="modal-content">
+          <div class="modal-header">
+             <h4 class="title" id="defaultModalLabel">Verification Request</h4>
+          </div>
+          <div class="modal-body">
+             <div class="row">
+ 
+                <div class="col-md-12">
+                   <div class="input-group">
+                       <textarea class="form-control" placeholder="Message" [(ngModel)]="requestMessage"></textarea>
+                   </div>
+                </div>
+ 
+             </div>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-danger waves-effect"  (click)="sendVerificationRequest()">SAVE</button>
+             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+          </div>
+       </div>
+    </div>
+ </div>

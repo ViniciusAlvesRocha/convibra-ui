@@ -1,0 +1,76 @@
+<section class="content">
+  <div class="body_scroll">
+      <div class="block-header">
+          <div class="row">
+              <div class="col-lg-7 col-md-6 col-sm-12">
+                  <h2>Scan QR Code</h2>
+                  <ul class="breadcrumb">
+                    <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                      <li class="breadcrumb-item active">Scan QR Code</li>
+                  </ul>
+                  <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+              </div>
+          </div>
+      </div>
+
+      <div class="container-fluid">
+          <!-- Hover Rows -->
+          <div class="row clearfix">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                  <div class="card">
+                      <div class="body">
+                              
+                            <ng-container>
+                              <div class="col-sm-12 text-center mt-3">
+                                  <h3 class="mb-1">Scan QR Code</h3>
+                              </div>
+                            <div class="row" >
+                              <div class="col-sm-5 camera-box mt-3 text-center">
+                                <div class="scanner-shell" [hidden]="!hasDevices" >
+                                  <zxing-scanner 
+                                    [torch]="torchEnabled" 
+                                    [(device)]="currentDevice" 
+                                    (scanSuccess)="onCodeResult($event)"
+                                    (permissionResponse)="onHasPermission($event)"
+                                    (camerasFound)="onCamerasFound($event)" 
+                                    (torchCompatible)="onTorchCompatible($event)">
+                                  </zxing-scanner>
+                                </div>
+                
+                                <div class="cameroffmsg">
+                                  <ng-container *ngIf="hasPermission === undefined">
+                                    <h2>Waiting for permissions.</h2>
+                                    <blockquote>
+                                      If your device does not has cameras, no permissions will be asked.
+                                    </blockquote>
+                                  </ng-container>
+                  
+                                  <ng-container *ngIf="hasPermission === false">
+                                    <h2>You denied the camera permission, we can't scan anything without it. 😪</h2>
+                                  </ng-container>
+                  
+                                  <ng-container *ngIf="hasDevices === undefined">
+                                    <h2>Couldn't check for devices.</h2>
+                                    <blockquote>
+                                      This may be caused by some security error.
+                                    </blockquote>
+                                  </ng-container>
+                  
+                                  <ng-container *ngIf="hasDevices === false">
+                                    <h2>No devices were found.</h2>
+                                    <blockquote>
+                                      I believe your device has no media devices attached to.
+                                    </blockquote>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </div>
+                            </ng-container>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+

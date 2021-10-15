@@ -1,0 +1,172 @@
+<!-- Page Loader
+<div class="page-loader-wrapper">
+  <div class="loader">
+      <div class="m-t-30"><img class="zmdi-hc-spin" src="assets/images/loader.svg" width="48" height="48" alt="Aero"></div>
+      <p>Please wait...</p>
+  </div>
+</div> -->
+
+<!-- Overlay For Sidebars -->
+<div class="overlay"></div>
+
+<!-- Main Search -->
+<div id="search">
+    <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
+    <form>
+        <input type="search" value="" placeholder="Search..." />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<header class="text-right">
+    <div class="container-fluid">
+        <div class="header_btn">
+            <a title="sign out" href="javascript:void(0);" id="logout" (click)="logout()"><i
+                    class="zmdi zmdi-power"></i></a>
+            <button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+                    class="zmdi zmdi-sort-amount-desc"></i></button>
+        </div>
+    </div>
+</header>
+
+
+<!-- Custom Sidemenu Start -->
+<aside id="leftsidebar" class="sidemenu sidebar">
+    <div class="constant">
+        <div class="navbar-brand">
+            <a href=""><img src="{{ instanceSettingObj.logo }}" alt="{{ instanceSettingObj.orgName }}"></a>
+        </div>
+        <div class="user_profile">
+            <a class="image" href="javascript:void(0);"><img src="assets/images/profile_av.jpg" alt="User"></a>
+            <div class="detail">
+                <h4>{{activeUser?.firstName}} {{activeUser?.lastName}}</h4>
+                <small>{{activeUser?.designation}}</small>
+            </div>
+        </div>
+    
+        <div class="sidebar_search"  *ngIf="activeUser?.role=='ROLE_ACCOUNT_ADMIN'">
+            <div class="input-group">
+                <select class="form-control" id="subAccountID" name="subAccountID" [(ngModel)]="subAccountID">
+                    <option value="false">{{ subAccountLoadState}} </option>
+                    <option *ngFor="let _subAccount of subAccountList;let i = index"
+                        value="{{ _subAccount._id }}">
+                        {{ _subAccount.firstName }} {{ _subAccount.lastName }}
+                    </option>
+                </select>
+            </div>
+            <div class="right">
+                <button class="btn btn-sm" (click)="setCurrentAccount()">Go</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="activeUser?.role != 'ROLE_ACCOUNT_ADMIN' && activeUser?.previousAuth?.role == 'ROLE_ACCOUNT_ADMIN' ">
+        <div class="col-md-12">
+            <button class="btn btn-info" (click)="switchToPreviousAccount()"> Back to Account Admin</button>
+        </div>
+    </div>
+
+    <div class="menus">
+        <ul class="list-inline" *ngIf="activeUser?.role=='ROLE_ACCOUNT_ADMIN'">
+            <li class="open" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a href="#"
+                routerLink="/dashboard"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/profile"><i
+                        class="zmdi zmdi-settings"></i><span>Profile</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/sub-account-admin"><i class="zmdi zmdi-accounts"></i><span>Sub Account
+                        Admins</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/verifier"><i
+                        class="zmdi zmdi-accounts"></i><span>Verifiers</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/recipient"><i
+                        class="zmdi zmdi-accounts"></i><span>Recipients</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/blockchain"><i
+                        class="zmdi zmdi-format-bold"></i><span>Blockchain Info</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/instance-setting"><i
+                        class="zmdi zmdi-settings"></i><span>Instance Setting</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/template"><i
+                        class="zmdi zmdi-widgets"></i><span>Templates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/email-template"><i
+                        class="zmdi zmdi-settings"></i><span>Email Templates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/block-explorer"><i
+                        class="zmdi zmdi-settings"></i><span>Block Explorer</span></a></li>
+        </ul>
+
+        <ul class="list-inline" *ngIf="activeUser?.role=='ROLE_SUB_ACCOUNT_ADMIN'">
+            <li class="open" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><a href="#"
+                routerLink="/dashboard"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/profile"><i
+                        class="zmdi zmdi-settings"></i><span>Profile</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/issuer"><i
+                        class="zmdi zmdi-accounts"></i><span>Issuers</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/course/manage"><i
+                        class="zmdi zmdi-book"></i><span>Courses</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/recipient"><i
+                        class="zmdi zmdi-accounts"></i><span>Recipients</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/certificate"><i
+                        class="zmdi zmdi-file"></i><span>Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/certificates/revoke"><i class="zmdi zmdi-file"></i><span>Revoked
+                        Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/bulkimport/recipient"><i class="zmdi zmdi-case-download"></i><span>Bulk
+                        Import</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/template"><i
+                        class="zmdi zmdi-widgets"></i><span>Templates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/blockchain"><i
+                        class="zmdi zmdi-format-bold"></i><span>Blockchain Info</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/block-explorer"><i
+                        class="zmdi zmdi-settings"></i><span>Block Explorer</span></a></li>
+        </ul>
+
+        <ul class="list-inline" *ngIf="activeUser?.role=='ROLE_RECIPIENT'">
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/profile"><i
+                class="zmdi zmdi-settings"></i><span>Profile</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/certificate"><i
+                        class="zmdi zmdi-home"></i><span>Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/blockchain"><i
+                        class="zmdi zmdi-format-bold"></i><span>Blockchain Info</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/block-explorer"><i
+                        class="zmdi zmdi-settings"></i><span>Block Explorer</span></a></li>
+        </ul>
+
+        <ul class="list-inline" *ngIf="activeUser?.role=='ROLE_ISSUER'">
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/profile"><i
+                class="zmdi zmdi-settings"></i><span>Profile</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/recipient"><i
+                        class="zmdi zmdi-widgets"></i><span>Recipients</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/certificates/create"><i class="zmdi zmdi-widgets"></i><span>Create
+                        Certificate</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/certificate"><i
+                        class="zmdi zmdi-bookmark"></i><span>Issued Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/certificates/revoke"><i class="zmdi zmdi-file"></i><span>Revoked
+                        Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/verification/request"><i
+                        class="zmdi zmdi-badge-check"></i><span>Verification Requests</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/blockchain"><i
+                        class="zmdi zmdi-format-bold"></i><span>Blockchain Info</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/block-explorer"><i
+                        class="zmdi zmdi-settings"></i><span>Block Explorer</span></a></li>
+        </ul>
+
+        <ul class="list-inline" *ngIf="activeUser?.role=='ROLE_VERIFIER'">
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/profile"><i
+                class="zmdi zmdi-settings"></i><span>Profile</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#"
+                    routerLink="/dashboard/certificate/shared"><i
+                        class="zmdi zmdi-file"></i><span>Certificates</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/blockchain"><i
+                        class="zmdi zmdi-format-bold"></i><span>Blockchain Info</span></a></li>
+            <li class="open" [routerLinkActive]="['active']"><a href="#" routerLink="/dashboard/block-explorer"><i
+                        class="zmdi zmdi-settings"></i><span>Block Explorer</span></a></li>
+        </ul>
+    </div>
+
+</aside>
+<!-- Custom Sidemenu End -->
+
+<!-- Main Content -->
+
+<router-outlet></router-outlet>

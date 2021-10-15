@@ -1,0 +1,230 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <h2>Certificate Information</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="{{certificateListingLink}}">Certificates</a></li>
+                        <li class="breadcrumb-item active">Certificate Information</li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row mt-3 mb-3">
+                <div class="col-sm-12 text-right">
+                    <button (click)="goBack()" class="btn btn-secondary waves-effect"><i class="zmdi zmdi-arrow-left"></i>Back</button>
+                </div>
+            </div>
+            <div class="row vertical-tab-row">
+                <mat-tab-group (selectedTabChange)="onTabChanged($event);">
+                    <mat-tab label="Certificate Information">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Certificate Information</h2>
+                            </div>
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Course</th>
+                                                <td style="word-break: break-all;">{{certificateInfo?.course?.Lang1 || ''}} / <br/>{{ certificateInfo?.course.Lang2 || ''}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Issued To</th>
+                                                <td>{{certificateInfo?.issuedTo?.name || ''}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Issued On</th>
+                                                <td>{{certificateInfo?.rawCertificate?.issuedOn || ''}}</td>
+                                            </tr>
+                                            
+                                            
+                                            <tr>
+                                                <th scope="row">Issuer</th>
+                                                <td>{{certificateInfo?.rawCertificate?.issuer?.name || ''}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Serial No</th>
+                                                <td>{{ certificateInfo?.rawCertificate?.id }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Result</th>
+                                                <td>{{certificateInfo?.extraData?.result || ''}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Institution</th>
+                                                <td>{{instanceSettingData?.organizationName || ''}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Issuer Address</th>
+                                                <td style="word-break: break-all;">{{certificateInfo?.issuedBy?.address}}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Certificate Hash</th>
+                                                <td style="word-break: break-all;">{{certificateInfo?.signedCertificate?.signature?.targetHash || ''}}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Certificate Issuance TX Hash</th>
+                                                <td style="word-break: break-all;"><a target="_blank" routerLink="/dashboard/block-explorer/tx/{{certificateInfo?.issuanceTxHash}}">{{certificateInfo?.issuanceTxHash || ''}}</a></td>
+                                            </tr>
+
+                                            <tr *ngIf="certificateInfo?.revocationDetails?.txHash !=null">
+                                                <th scope="row">Certificate Revocation TX Hash</th>
+                                                <td style="word-break: break-all;"><a target="_blank" routerLink="/dashboard/block-explorer/tx/{{certificateInfo?.revocationDetails?.txHash}}">{{certificateInfo?.revocationDetails?.txHash || ''}}</a></td>
+                                            </tr>
+
+                                            <tr>
+                                                <th scope="row">Certificate Claimed</th>
+                                                <td>
+                                                    <span *ngIf="certificateInfo?.isClaimed == false" class="badge badge-danger">NO</span>
+                                                    <span *ngIf="certificateInfo?.isClaimed == true" class="badge badge-success">YES</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Certificate Revoked</th>
+                                                <td>
+                                                    <span *ngIf="certificateInfo?.isRevoked == false" class="badge badge-danger">NO</span>
+                                                    <span *ngIf="certificateInfo?.isRevoked == true" class="badge badge-success">YES</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Certificate Holder Information">
+                        <div class="card">
+                            <div class="header">
+                                <h2>Certificate Holder Information</h2>
+                            </div>
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr *ngFor="let data of extraData">
+                                                <th scope="row">{{ toTitleCase(data.key)}}</th>
+                                                <td style="word-break: break-all;">{{ data.value || ''}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Certificate QR Code"> 
+                        <div class="card">
+                            <div class="header">
+                                <h2>Certificate QR Code</h2>
+                            </div>
+                            <div class="body">
+                                <div class="row">
+                                    <div class="col-sm-5 qrcodecenter">
+                                        <div *ngIf="qrCertificateData" class="qrcode">
+                                            <qrcode [qrdata]="qrCertificateData"
+                                                [size]="256" [level]="'M'"></qrcode>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Certificate PDF" > 
+                        <div class="card">
+                            <div class="header">
+                                <h2>Certificate PDF</h2>
+                            </div>
+                            <div class="body">
+                                <div class="right">
+                
+                                    <div class="clearfix"></div>
+                                    <div class="row">
+                                        <div class="col-sm-12 certificate_info_right_btn_div mb-2">
+                                            <div class="dflex_left">
+                                                <select [(ngModel)]="activeCertificate" (change)="switchCertificate()" id="loadedCertificate">
+                                                    <option value=""> Select Certificate</option>
+                                                        <option *ngFor="let data of generatedFile; index as i" value="{{ data.file }}" selected>Certificate {{ i+1 }}</option>
+                                                    </select>
+                                            </div>
+                                            <div class="dflex_right">
+                                                <button class="float-right btn btn-primary mb-2" (click)="viewCertificate(activeCertificate)">View Certificate In Next Tab</button>
+                                                <button class="btn btn-primary" (click)="switchCertificate()">View Certificate</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <iframe id="previewIframe" height="86%" width="100%"
+                                        frameborder="0"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Certificate Location"> 
+                        <div class="card">
+                            <div class="header">
+                                <h2>Certificate Location</h2>
+                            </div>
+                            <div class="body">
+                                <div id="map" class="gmap"></div>
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="History"> 
+                        <div class="card">
+                            <div class="header">
+                                <h2>History</h2>
+                            </div>
+                            <div class="body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Certificate Id</th>
+                                                <th>Issuer</th>
+                                                <th>Issued Date</th>
+                                                <th>Is Claimed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr  *ngFor="let history of certificateHistoryList;let i=index">
+                                                <th scope="row">{{i+start}}</th>
+                                                <td>
+                                                    <a href="javasecript:void(0)" (click)="viewCertificateHistory(history._id,history.isClaimed)">{{history._id}}</a>
+                                                </td>
+                                                <td>{{history?.rawCertificate?.issuer?.name || ''}}</td>
+                                                <td>{{ history?.rawCertificate?.issuedOn || '' }} </td>
+                                                <td><span class="badge" [ngClass]="{'badge-success':history.isClaimed,'badge-danger':!history.isClaimed}">{{ isClamied(history.isClaimed) }}</span>
+                                                </td> 
+                                            </tr>
+                                            <tr *ngIf="certificateHistoryList?.length == 0" >
+                                                <td colspan="5" align="center"> Record Not Exist</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="pagination_div" [hidden]="certificateHistoryList.length==0">
+                                    <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                                    <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                                        [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [pageSize]="perPage" [boundaryLinks]="true"></ngb-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                  
+            </div>
+
+        </div>
+    </div>
+</section>

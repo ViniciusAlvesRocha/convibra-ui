@@ -1,0 +1,133 @@
+<section class="content file_manager">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Templates</h2>
+                    <ul class="breadcrumb">
+                        
+                        <li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a routerLink="/dashboard/template">Template</a></li>
+                        <li class="breadcrumb-item active">Update Template</li>
+                    </ul>
+                </div>
+
+
+                <div class="col-lg-5 col-md-6 col-sm-12">
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Vertical Layout -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Update Template Version</h2>
+                        </div>
+                        <div class="body">
+
+                            <!-- Parent Template Detail Start -->
+                            
+                            <div class="row update-template">
+                                <div class="col-sm-4 box">
+                                    <div class="innerbox">
+                                        <label>Template Name</label>
+                                    <p> {{ parentTemplateDetail?.name }} </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 box">
+                                   <div class="innerbox">
+                                    <label>Template Description</label>
+                                    <p> {{ parentTemplateDetail?.description }} </p>
+                                   </div>
+                                </div>
+
+                                <div class="col-sm-4 box">
+                                    <div class="innerbox">
+                                        <label>Document Type</label>
+                                    <p> {{ parentTemplateDetail?.certificateType }} </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 box">
+                                    <div class="innerbox">
+                                        <label>Language</label>
+                                    <p> {{ parentTemplateDetail?.language }} </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 box">
+                                    <div class="innerbox">
+                                        <label>Start Date</label>
+                                    <p> {{ parentTemplateDetail?.startDate | date:'dd MMMM yyyy' }} </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4 box">
+                                    <div class="innerbox">
+                                        <label>End Date</label>
+                                    <p> {{ parentTemplateDetail?.endDate | date:'dd MMMM yyyy' }} </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Parent Template Detail End -->
+
+                            <form [formGroup]="templateVersionUpdateForm" (ngSubmit)="updateTemplateVersion();"
+                                action="">
+                                <div class="row">
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>Start Date</label>
+                                        <div class="input-group  datepicker-clss">
+                                            <input matInput formControlName="startDate" [matDatepicker]="startDate"
+                                                placeholder="Select Start Date" id="startDate" readonly
+                                                (click)="startDate.open()">
+                                            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #startDate></mat-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>End Date</label>
+                                        <div class="input-group  datepicker-clss">
+                                            <input matInput formControlName="endDate" [matDatepicker]="endDate"
+                                                placeholder="Select End Date" id="endDate" readonly
+                                                (click)="endDate.open()">
+                                            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                                            <mat-datepicker #endDate></mat-datepicker>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 col-sm-6">
+                                        <label>Document</label>
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" placeholder="Upload document"
+                                                name="documentFile" formControlName="documentFile" #documentFile
+                                                title="Select Document" (change)="updateFile($event)">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">
+                                                    <i class="zmdi zmdi-file-plus"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <span class="error"
+                                            *ngIf="templateVersionUpdateForm.get('documentFile').touched  && templateVersionUpdateForm.get('documentFile').hasError('required')">Please
+                                            select document</span>
+                                    </div>
+
+                                    
+
+                                </div>
+                                <app-module-action [submitTitle]="'Save'" [showBack]="true"></app-module-action>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,96 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Certificates</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active"><i class="zmdi zmdi-home"></i> Certificate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <!-- Hover Rows -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="float-right mb-2">
+                                <button class="btn btn-success" (click)="ngOnInit();">
+                                    <i class="zmdi zmdi-refresh-alt"></i> Refresh
+                                </button>
+                                <a class="btn btn-primary" routerLink="/dashboard/verification/qr-scan">Scan QR-Code</a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Certificate Id</th>
+                                            <th>Full Name</th>
+                                            <th>Course</th>
+                                            <th>Issuer Name</th>
+                                            <th>Issue Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let certificate of certificateList;let i=index">
+                                            <th scope="row">{{i+start}}</th>
+                                            <td>{{certificate?.certificateId?._id}}</td>
+                                            <td>{{certificate?.certificateId?.issuedTo?.name}}</td>
+                                            <td>{{certificate?.certificateId?.course?.Lang1}}</td>
+                                            <td>{{certificate?.certificateId?.rawCertificate?.issuer?.name}}</td>
+                                            <td>{{certificate?.certificateId?.rawCertificate?.issuedOn}}</td>
+                                            <td class="actiontd"><span (click)="viewCertificate(certificate?.certificateId?._id,certificate?.certificateId?.isClaimed)"><i
+                                                        title="view" class="zmdi zmdi-eye"></i></span>
+                                                <span (click)="requestForVerification(certificate?.certificateId?._id)"><i
+                                                        title="Request for verification" class="zmdi zmdi-search-in-page"></i></span>
+                                                <span routerLink="/dashboard/verification/response/{{certificate?.certificateId?._id}}"><i
+                                                        title="View Response" class="zmdi zmdi-play-for-work"></i></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Hover Rows  (click)="requestForVerification(certificate?.certificateId?._id)" -->
+            <div class="pagination_div" [hidden]="certificateList.length==0">
+                <span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+                <ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems" [(page)]="currentPage"
+                    [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)" [boundaryLinks]="true"></ngb-pagination>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal fade" id="verificationRequestModal" tabindex="-1" role="dialog">
+    <form action="" #form="ngForm" (submit)="verificationRequest(form)">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="title" id="defaultModalLabel">Request Verification</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <textarea type="text" class="form-control txtmsg" placeholder="Enter message for issuer"
+                                [(ngModel)]="requestMessage" #txtMsg="ngModel" name="txtMsg" required></textarea>
+                        </div>
+                        <span class="error" *ngIf="txtMsg.errors?.required && form.submitted">Please enter message</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger waves-effect">Request</button>
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">CLOSE</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

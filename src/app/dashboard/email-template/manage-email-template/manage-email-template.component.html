@@ -1,0 +1,76 @@
+<section class="content">
+	<div class="body_scroll">
+		<div class="block-header">
+			<div class="row">
+				<div class="col-lg-7 col-md-6 col-sm-12">
+					<h2>Email Template</h2>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+						<li class="breadcrumb-item active">Email Template</li>
+					</ul>
+					<button class="btn btn-primary btn-icon mobile_menu" type="button"><i
+							class="zmdi zmdi-sort-amount-desc"></i></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<!-- Hover Rows -->
+			<div class="row clearfix">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="card">
+						<div class="body">
+							<!-- <div class="float-right mb-2"> -->
+							<div class="float-right mb-2">
+								<button class="btn btn-success" (click)="ngOnInit();">
+									<i class="zmdi zmdi-refresh-alt"></i> Refresh
+								</button>
+								<!-- <button class="btn btn-primary" routerLink="/dashboard/email-template/add">
+									<i class="zmdi zmdi-plus-circle"></i> Add Email Template
+								</button> -->
+							</div>
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name</th>
+											<th>Subject</th>
+											<th>From</th>
+											<th>From Email</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr *ngFor="let emailTemplate of emailTemplateList;let i=index">
+											<th scope="row">{{i+start}}</th>
+											<td>{{emailTemplate?.templateName}}</td>
+											<td>{{emailTemplate?.templateSubject}}</td>
+											<td>{{emailTemplate?.templateFrom}}</td>
+											<td>{{emailTemplate?.templateFromEmail}}</td>	
+											<td class="actiontd">
+												<span><a routerLink="/dashboard/email-template/edit/{{ emailTemplate?._id }}"><i title="Edit" class="zmdi zmdi-edit"></i></a></span>
+												<span><a routerLink="/dashboard/email-template/preview/{{ emailTemplate?._id }}"><i title="Preview" class="zmdi zmdi-eye"></i></a></span>
+											</td>
+										</tr>
+										<tr *ngIf="emailTemplateList?.length == 0">
+											<td colspan="9" align="center"> Record Not Exists</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- #END# Hover Rows -->
+			<div class="pagination_div" [hidden]="emailTemplateList.length==0">
+				<span>Showing {{start}} to {{end}} of {{totalItems}} entries</span>
+				<ngb-pagination class="float-right pagination-danger" [collectionSize]="totalItems"
+					[(page)]="currentPage" [maxSize]="5" [rotate]="true" (pageChange)="pageChange($event)"
+					[pageSize]="perPage" [boundaryLinks]="true">
+				</ngb-pagination>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,103 @@
+<section class="content {{ isPublic ? 'public-full-content' : '' }}">
+  
+  <app-public-header *ngIf="isPublic"></app-public-header>
+  <div class="body_scroll">
+      <div class="block-header">
+          <div class="row">
+              <div class="col-sm-12 top-breadcrumb">
+                  <h2>TX Summary <small>#{{txDetails.hash}}</small></h2>
+                  <ul class="breadcrumb">
+                      <!-- <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li> -->
+                      <li class="breadcrumb-item"><a routerLink="{{ baseRoute }}">Block Explorer</a></li>
+                      <li class="breadcrumb-item active">TX Summary</li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="container-fluid">
+          <div class="row clearfix">
+              <div class="col-sm-12">
+                  <div class="card mb-0">
+                    <div class="below_bradcrumb_ttl mb-3 text-right">
+                      
+                      <a class="btn btn-default" routerLink="{{ baseRoute }}">Back</a>
+                    </div>
+                      <div class="body">
+                          <div class="card">
+                            <div class="label label-info text-center" *ngIf="txDetails.error != false">
+                              <h2>{{ txDetails.error }}</h2>
+                            </div>
+
+                            <div class="label label-info text-center" *ngIf="txDetails.loaded == false">
+                              <h2>Loading...</h2>
+                            </div>
+
+                            <table class="table table-striped" *ngIf="txDetails.error == false && txDetails.loaded == true">
+                              <tbody>
+                                <tr>
+                                  <td>Hash</td>
+                                  <td>{{ txDetails?.details?.hash }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Action Performed</td>
+                                  <td>{{ txDetails?.details?.actionPerformed }}</td>
+                                </tr>
+                                <tr *ngIf="txDetails?.details?.actionPerformed != 'Other'">
+                                  <td>Certificate Details URL</td>
+                                  <td><a target="_blank" routerLink="{{ baseCertificateRoute }}{{ txDetails?.details?.certificateInfo?._id }}">{{ txDetails?.details?.certificateInfo?.targetHash }}</a></td>
+                                </tr>
+                                <tr>
+                                  <td>Block Hash</td>
+                                  <td><a target="_blank" routerLink="{{ baseRoute }}block/{{ txDetails?.details?.blockHash }}">{{ txDetails?.details?.blockHash }}</a></td>
+                                </tr>
+                                <tr>
+                                  <td>Included In Block</td>
+                                  <td><a class="btn btn-info" target="_blank" routerLink="{{ baseRoute }}block/{{ txDetails?.details?.blockHash }}">{{ txDetails?.details?.blockNumber }}</a></td>
+                                </tr>
+                                <tr>
+                                  <td>Confirmation(s)</td>
+                                  <td>{{ txDetails?.details?.confirmations }}</td>
+                                </tr>
+                                <tr>
+                                  <td>From</td>
+                                  <td>{{ txDetails?.details?.from }}</td>
+                                </tr>
+                                <tr>
+                                  <td>To</td>
+                                  <td>{{ txDetails?.details?.to }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Gas Price</td>
+                                  <td>{{ txDetails?.details?.gasPriceFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Gas Limit</td>
+                                  <td>{{ txDetails?.details?.gasLimitFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Timestamp</td>
+                                  <td>{{ txDetails?.details?.timestampFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Nonce</td>
+                                  <td>{{ txDetails?.details?.nonce }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Value</td>
+                                  <td>{{ txDetails?.details?.valueFormatted }}</td>
+                                </tr>
+                                <tr>
+                                  <td>Data</td>
+                                  <td><code>{{ txDetails?.details?.data }}</code></td>
+                                </tr>
+                              </tbody>  
+                            </table>   
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+          </div>
+      </div>
+  </div>
+</section>

@@ -1,0 +1,54 @@
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-sm-12 top-breadcrumb">
+                    <h2>Blockchain Info</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item" ><a routerLink="/dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item active">Blockchain Info</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-lg-8 col-md-12">
+                    <div class="card mb-0">
+                        <div class="header">
+                            <h2>Your Wallet Information</h2>
+                        </div>
+                        <div class="body">
+                            <div class="card mb-0">
+                                <div>
+                                    <small class="text-muted">Wallet Address</small>
+                                    <p>{{blockchainInfo?.address}}</p>
+                                    <hr>
+                                    <small class="text-muted">Wallet Balance (For Internal Use)</small>
+                                    <p>{{blockchainInfo?.balance}} <strong>{{blockchainInfo?.coinName}} Coins</strong></p>
+                                    <hr>
+                                    <small class="text-muted">Block Height (For Internal Use)</small>
+                                    <p>{{blockchainInfo?.height}}</p>
+                                    <hr>
+                                    <span><button class="btn btn-primary" (click)="downloadPrivateKey()">Download Private Key</button></span>
+                                </div>
+                                <span *ngIf="role=='ROLE_ISSUER' || role=='ROLE_RECIPIENT'"><strong>Wallet Balance is used for blockchain transaction and will credited automatically by our intelligent system when balance reduces to minimum thresold </strong></span>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Wallet Address QR Code</h2>
+                        </div>
+                        <div class="body">
+                            <qrcode [qrdata]="blockchainInfo?.address"
+                                [size]="256" [level]="'M'"></qrcode>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
